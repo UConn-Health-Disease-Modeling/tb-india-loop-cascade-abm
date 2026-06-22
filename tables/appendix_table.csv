@@ -1,0 +1,24 @@
+Section,Item,Value
+1. Model context,Population (India),"1,400,000,000"
+1. Model context,Baseline incidence (per 100k),210
+1. Model context,Baseline prevalence (per 100k),312
+1. Model context,End-TB 2035 target,90% incidence reduction
+1. Model context,Population multiplier R0_AMP,3.0 (endemic feedback)
+2. Loop-group composition,n_active TB,195268
+2. Loop-group composition,NoLooponly,39054 (20.0%)
+2. Loop-group composition,TestLooponly,97634 (50.0%)
+2. Loop-group composition,TestTxfail,48817 (25.0%)
+2. Loop-group composition,Txfailonly,9763 (5.0%)
+3. Cascade metrics,Mean tests/confirmed TB,3.17
+3. Cascade metrics,Median tests/confirmed TB,3
+3. Cascade metrics,Patients >=2 tests (%),87.4%
+3. Cascade metrics,Patients >=4 tests (%),41.3%
+3. Cascade metrics,Patients in any loop (%),80.0%
+6. 2035 endpoints (modeled),Baseline,Inc=210/100k | Prev=312/100k | Red=0%
+6. 2035 endpoints (modeled),ACF,Inc=141/100k | Prev=231/100k | Red=33%
+6. 2035 endpoints (modeled),Dx,Inc=168/100k | Prev=259/100k | Red=20%
+6. 2035 endpoints (modeled),Tx,Inc=175/100k | Prev=268/100k | Red=17%
+6. 2035 endpoints (modeled),ACF+Dx,Inc=105/100k | Prev=191/100k | Red=50%
+6. 2035 endpoints (modeled),ACF+Tx,Inc=119/100k | Prev=207/100k | Red=43%
+6. 2035 endpoints (modeled),Dx+Tx,Inc=144/100k | Prev=232/100k | Red=31%
+6. 2035 endpoints (modeled),ACF+Dx+Tx,Inc=38/100k | Prev=105/100k | Red=82%

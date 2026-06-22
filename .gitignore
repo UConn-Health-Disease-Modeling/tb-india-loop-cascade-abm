@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*-checkpoint.ipynb
+
+# EMOD outputs (large; user generates locally)
+SpatialReport_*.bin
+SpatialReport_*.bin.json
+PropertyReport.json
+ReportEventRecorder.csv
+InsetChart.json
+*.id
+*.bin
+
+# Experiment UID directories (UUID-format)
+[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-*
+
+# Large databases
+*.db
+*.parquet
+calibration_db*.csv
+
+# COMPS logs
+COMPS_log.log
+COMPS_ID
+idmtools.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# OneDrive metadata
+~$*
+.~lock.*
+
+# Build artifacts
+build/
+dist/
+*.tar.gz
+*.zip
+
+# Local secrets / credentials
+.env
+credentials.json
+*_credentials.txt
