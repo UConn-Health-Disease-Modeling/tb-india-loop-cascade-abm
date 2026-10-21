@@ -1,213 +1,108 @@
-# Cascade-of-Care Loops as Transmission Multipliers in Tuberculosis: India ABM
+# Care-cascade failures as a determinant of infectious burden in tuberculosis: an agent-based modelling study in India
 
-**A loop-group-resolved agent-based model of tuberculosis transmission in India**
+Code, derived data and figures for the manuscript of the same title (Jo et al., 2026, in preparation).
+The model is an EMOD-TBHIV individual-based simulation of TB transmission and care in India, calibrated to
+national incidence, prevalence and mortality, in which every active TB episode is followed through its
+diagnostic and treatment events and assigned to a care-cascade "loop group".
 
-This repository contains the simulation code, calibration framework, analysis
-notebooks, manuscript figures, and supplementary appendix tables for the TB
-India agent-based modelling (ABM) study using EMOD-TBHIV.
+Three questions are answered here:
 
----
+1. **What is in the repository** and what is not (raw simulation outputs are not; see below).
+2. **How each figure and table in the manuscript was produced** (the output map).
+3. **How to reproduce** the results at two levels: from the bundled derived data (minutes, no EMOD needed)
+   or from scratch (requires EMOD-TBHIV and the IDM COMPS cluster).
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Repository structure](#repository-structure)
-3. [Installation](#installation)
-4. [Reproducing the analysis](#reproducing-the-analysis)
-5. [Manuscript and appendix](#manuscript-and-appendix)
-6. [Key findings (at a glance)](#key-findings-at-a-glance)
-7. [Citation](#citation)
-8. [Contact](#contact)
-
----
-
-## Overview
-
-We extend an EMOD-TBHIV individual-based simulation calibrated to Indian TB
-incidence, prevalence, and notification time-series (1997–2024) to track every
-patient episode through diagnostic and treatment events. Active TB episodes are
-partitioned into four **loop groups** based on calibrated counts of false-negative
-diagnostic tests, pre-treatment defaults, and treatment failures: **NoLooponly,
-TestLooponly, TestTxfail, Txfailonly**.
-
-We simulate 8 intervention scenarios (Baseline, ACF, Dx, Tx, and all combinations)
-starting in 2025 and project outcomes to 2035, quantifying:
-
-- The hidden patient-level heterogeneity in WHO "treatment success rate"
-- Pareto-style concentration of cascade-driven transmission (Gini ≈ 0.45)
-- Mechanistic complementarity of intervention bundles (ACF, Dx, Tx target
-  different loop populations)
-- Path to End-TB 2035 (incidence reduction targets)
-
----
-
-## Repository structure
+## Repository layout
 
 ```
-release/
-├── README.md                              This file
-├── LICENSE                                MIT licence
-├── requirements.txt                       Python dependencies
-│
-├── manuscript/                            Final manuscript drafts (.docx)
-│   ├── India_TB_model_main.docx
-│   └── Appendix_supplementary.docx        (structured: S-1 ... S-7)
-│
-├── notebooks/                             Analysis notebooks (Jupyter)
-│   ├── 01_simulation/                     EMOD simulation runs
-│   │   └── India_TB_v5_simulation.ipynb
-│   ├── 02_calibration/                    History-matching calibration
-│   │   ├── history_matching.ipynb
-│   │   ├── calibration_framework.ipynb
-│   │   └── calibration.ipynb
-│   └── 03_figures/                        Figure & table generation
-│       ├── India_TB_v5_figures_main.ipynb         (13 main paper figures)
-│       └── India_TB_v5_figures_appendix.ipynb     (tables S-1..S-4, S-7.x)
-│
-├── src/                                   Python modules (EMOD config + helpers)
-│   ├── params.py                          EMOD parameter dictionary
-│   ├── manifest.py                        Path constants
-│   ├── set_config.py                      EMOD config builder
-│   ├── add_tb_drug_type.py
-│   ├── run_base_simulation.py             Simulation entry point
-│   ├── recalibration_plan.py
-│   ├── spatial_plotter.py
-│   └── Base_analysis.py
-│
-├── data/                                  Input data files
-│   ├── demographics.json                  EMOD demographics
-│   ├── drug.json                          Drug & treatment parameters
-│   ├── default_config.json                EMOD base configuration
-│   ├── BGW.xlsx                           Birth/growth/weight data
-│   ├── regional_migration.bin             Spatial migration matrix
-│   └── regional_migration.bin.json
-│
-├── figures/                               Final manuscript figures (PNG)
-│   ├── calibration_overlay.png            Fig 1
-│   ├── Fig2_delay_decomposition.png       Fig 2 (loop-group infectious time)
-│   ├── Fig2a_events_and_groups.png        Fig 3 (composition)
-│   ├── FigG_inside_the_85.png             Fig 4 (Pareto disparity narrative)
-│   ├── FigH_transmission_tail.png         Fig 5 (Lorenz + distribution)
-│   ├── Fig4_cascade_metrics.png           Fig 6 (test distribution)
-│   ├── Fig5b_loopgroup_waterfall.png      Fig 7
-│   ├── Fig5c_delay_waterfall.png          Fig 8
-│   ├── FigDEF_combined_triple_lens.png    Fig 9 (3-panel heatmap)
-│   ├── FigP1_path_to_endtb.png            Fig 10 (trajectory)
-│   ├── FigP2_strategic_matrix.png         Fig 11
-│   ├── FigP3_pareto_frontier.png          Fig 12
-│   └── FigP7_loop_sensitivity.png         Fig 13
-│
-├── tables/                                Manuscript tables (Excel/CSV)
-│   ├── Table_A1_model_parameters.xlsx     7-sheet parameter listing (S-7)
-│   ├── Table_A1_unified.csv               Single-table version
-│   ├── calibration_tables_S1_S4.xlsx      Tables S-1 ... S-4
-│   ├── appendix_table.csv                 Consolidated outcomes (CSV)
-│   └── appendix_table.xlsx                Same as Excel
-│
-└── docs/                                  Methods documentation
-    ├── methods.md                         Loop-group definitions + calibration
-    └── reproducing.md                     Step-by-step reproduction guide
+.
+├── 01_India_TB_v23_wave1.ipynb      calibration wave 1  (200 LHS design points x 10 replicates)
+├── 01_India_TB_v24_wave2.ipynb      calibration wave 2  (100 NROY-restricted points x 25 replicates)
+├── 01_India_TB_v28_txgated.ipynb    production run: 8 scenarios x 100 replicates at the calibrated point,
+│                                     and (through helpers/run_experiment_B.py) the parameter-propagation run
+├── 01_India_TB_v30_loopsweep.ipynb  residual loop-closure sensitivity (Appendix Figure S-2)
+├── manifest.py, params.py, set_config.py, add_tb_drug_type.py   model definition used by the notebooks
+├── python_scripts/, EP4/            EMOD pre/post-processing hooks uploaded with each simulation
+├── Assets/, data/, drug.json, twonodes.csv, dtk_centos.id        model inputs (demographic overlay,
+│                                     India all-cause mortality series, prevalence-survey reference tables)
+├── helpers/                         calibration, extraction and figure scripts + the derived data they read
+├── <experiment-id>/calibration/     per-design-point summaries of the two calibration experiments
+├── figures/                         the manuscript figures, named by manuscript number
+├── docs/                            calibration notes
+├── requirements-simulation.txt      package versions of the simulation environment (Python 3.10)
+└── requirements-analysis.txt        minimal environment for the scripts in helpers/
 ```
 
----
+## Output map
 
-## Installation
+Manuscript item → script → data it reads → experiment. Scripts live in `helpers/`. "Derived" files are
+bundled in `helpers/`, so every row marked *bundled* reproduces without the raw outputs.
 
-### Requirements
-- **Python 3.7+** (tested on 3.7 and 3.10)
-- **EMOD-DTK v2.21** (for running new simulations; not required if reading
-  pre-generated outputs)
-- **Jupyter Lab** or **Jupyter Notebook**
+| Manuscript item | Script | Reads | Writes | Raw outputs needed? |
+|---|---|---|---|---|
+| Figure 1A/1B, Table 2 (cohort rows) | `fig1_rebuild_txc.py` → `fig1_plot_txc.py` | ReportEventRecorder of d892bdf7 → `fig1_values_txc.json`, `baseline_episodes_year2_txc.csv.gz` | `Fig1A_cascade_rates.png`, `Fig1B_patient_trajectories.png` | rebuild: yes; plot: bundled |
+| Figure 2A | `fig2_rebuild_txc.py` | InsetChart of d892bdf7 → `production_burden_txc.csv.gz` | `Fig2_calibration_trend.png` | bundled cache |
+| Figure 2B (panel B2 = tests per *tested* episode, the benchmark denominator), Table 2 delay phases | `fig2b_and_table2_txc.py` | `baseline_episodes_year2_txc.csv.gz` | `Fig2B_cascade_validation.png`, `table2_values_txc.json` | bundled |
+| Figure 3 | `fig3_rebuild_txc.py --plot-only` | `baseline_episodes_year2_txc.csv.gz`, `baseline_popyears_2015_2024.json` | `Fig3_loopgroup_burden.png`, `fig3_values_txc.json` | bundled (`--plot-only`); the denominator needs InsetCharts |
+| Figure 4 (three-lens heatmap) | `scenarios_rebuild_txc.py` → `fig5_rebuild_txc.py` | ReportEventRecorder of all 8 scenarios → `scenario_episodes_txc.csv.gz` | `Fig5_triple_lens.png`, `fig5_values_txc.csv` | rebuild: yes; plot: bundled |
+| Figure 5 | `extract_burden_incl.py`, `extract_propagation.py` → `fig5_endtb_panels_incl.py` | InsetCharts of d892bdf7 and f8dfe706 → `burden_by_rep_incl.csv.gz`, `burden_propagation.csv.gz` | `Fig5_endtb_panels.png`, `fig5_propagation_table.csv` | extract: yes; plot: bundled |
+| Appendix Table S-8, propagation text (S-3.8) | `propagation_contrasts.py` | `burden_propagation.csv.gz` | `propagation_contrasts.csv` | bundled |
+| Appendix Figure S-2 | `fig4_incidence_ci_txc.py` → `figS_loop_sensitivity.py` | InsetCharts of d892bdf7 and 941e6423 → `incidence_by_rep_txc.csv.gz`, `loopsweep_incidence_txc.csv.gz` | `FigS_loop_sensitivity.png` | extract: yes; plot: bundled |
+| Appendix Tables S-1 to S-6 | `targets_trend.py`, `calibration_wave1_lhs_trend2.py`, `wave2_design_trend2.py`, `compute_targets_trend.py`, `finalize_trend2.py` | the two `<experiment-id>/calibration/design_outputs_trend.csv` (bundled) | `finalize_trend2_report.txt`, `production_params_trend2.json` | design tables bundled |
+| Appendix Table S-7 (NROY marginals) | `nroy_marginals_trend2.py` | same | report to stdout | design tables bundled |
+| Appendix S-3.8 text (NROY structure: parameter rank correlations, conditional spans, sensitivity of the cascade benchmarks across burden-plausible design points) | `nroy_structure_trend2.py` | same | `nroy_structure_trend2.txt`, `nroy_corr_trend2.csv` | design tables bundled |
+| Propagation run (20 parameter sets x 8 scenarios x 10 replicates) | `run_experiment_B.py` (called from the v28 notebook), `nroy_subsamples_b.json` | — | experiment f8dfe706 | COMPS |
+| Historical cascade trends and intervention switches | `campaign_trend.py` | — | campaign events used by every notebook | — |
 
-### Dependencies
+Experiments (IDM COMPS, CALCULON): calibration wave 1 `af707f22-16bc-f111-92f1-000d3af5294c`, wave 2
+`496ded25-37bc-f111-92f1-000d3af5294c`, production `d892bdf7-18bd-f111-92f1-000d3af5294c`, parameter
+propagation `f8dfe706-d7c0-f111-92f1-000d3af5294c`, loop-closure sweep `941e6423`. Raw outputs are
+8–45 GB per experiment and are not distributed; the derived files above are what the figures are drawn from.
+
+The trajectory results use episodes activating in calendar years 2015–2024 (`COHORT` in
+`fig1_rebuild_txc.py`), with the loop group assigned per episode; `cohort_2015_2024_numbers.json` collects
+the headline numbers. Appendix Figure S-1 is a schematic drawn by hand.
+
+## Reproducing from the bundled derived data
+
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-analysis.txt
+cd helpers
+python fig1_plot_txc.py
+python fig2_rebuild_txc.py
+python fig2b_and_table2_txc.py
+python fig3_rebuild_txc.py --plot-only
+python fig5_rebuild_txc.py           # manuscript Figure 4
+python fig5_endtb_panels_incl.py     # manuscript Figure 5
+python figS_loop_sensitivity.py
+python propagation_contrasts.py
+python nroy_marginals_trend2.py        # Appendix Table S-7
+python nroy_structure_trend2.py        # Appendix S-3.8 numbers
 ```
 
-Key packages: `numpy`, `pandas`, `matplotlib`, `scipy`, `pdfplumber`,
-`python-docx`, `openpyxl`, `mogp_emulator` (for calibration).
+Figures are written to `figures/Figure_TxCure/` next to the bundled copies in `figures/`.
 
----
+## Reproducing from scratch
 
-## Reproducing the analysis
+1. Create the simulation environment (`requirements-simulation.txt`; Python 3.10) and obtain the EMOD-TBHIV
+   binary and schema through `emodpy` bootstrap into `download/` (see `manifest.py`). Simulations were run
+   on the IDM COMPS platform; `idmtools` and a COMPS account are required.
+2. Run `01_India_TB_v23_wave1.ipynb` and `01_India_TB_v24_wave2.ipynb` (`SCENARIO = 'wave1_cal'` /
+   `'wave2_cal'`), then `helpers/compute_targets_trend.py` on each experiment and
+   `helpers/finalize_trend2.py` to obtain the calibrated point (wave-2 design 4) and the NROY.
+3. Run `01_India_TB_v28_txgated.ipynb` with `SCENARIO = 'combined'` for the production experiment, and the
+   cell described in `helpers/run_experiment_B.py` for the propagation experiment.
+4. Run the extraction scripts in the output map (`fig1_rebuild_txc.py`, `scenarios_rebuild_txc.py`,
+   `extract_burden_incl.py`, `extract_propagation.py`, `fig4_incidence_ci_txc.py`), then the plot scripts.
 
-The analysis runs in three sequential stages:
+Each script's docstring records the experiment it reads and the analysis decisions behind it.
 
-### Stage 1 — Run EMOD simulation
-```
-notebooks/01_simulation/India_TB_v5_simulation.ipynb
-```
-Configures and submits 8 intervention scenarios to COMPS (or local EMOD).
-Outputs: `ReportEventRecorder.csv`, `PropertyReport.json` per scenario.
+## Software
 
-### Stage 2 — Calibrate parameters (history matching)
-```
-notebooks/02_calibration/history_matching.ipynb
-```
-Generates wave-based Latin hypercube samples, fits Matérn 5/2 GP emulators,
-identifies NROY region, selects best-fit parameter set (wave1_pt8).
+Simulations: EMOD-TBHIV (DTK v2.21) through emodpy 1.35.1, emod-api 1.35.1, emodpy-tbhiv 1.3.1 and
+idmtools 3.0.8 under Python 3.10.20. Analysis: numpy 2.2.6, pandas 2.3.3, matplotlib 3.10.8,
+scikit-learn 1.7.2 (Gaussian-process emulators for history matching).
 
-### Stage 3 — Generate figures and tables
-```
-notebooks/03_figures/India_TB_v5_figures_main.ipynb        # 13 main figures
-notebooks/03_figures/India_TB_v5_figures_appendix.ipynb    # Tables S-1..S-7
-```
+## Licence
 
-Both notebooks are self-contained: they load simulation outputs, build
-`loop_df` / `delay_df` / `episode_df`, and run all analyses end-to-end via
-**Kernel → Restart & Run All**.
-
-See **docs/reproducing.md** for the full step-by-step guide.
-
----
-
-## Manuscript and appendix
-
-| Document | Section | Contents |
-|---|---|---|
-| **Main paper** | Introduction | TB burden, cascade framework limits, contributions |
-| | Methods | EMOD model, calibration, loop-group classification |
-| | Results | 8 scenarios, Pareto, intervention specificity, End-TB path |
-| | Discussion | Hidden tail, find-vs-fix, loop multiplier, limitations |
-| **Appendix** | S-1 Model overview | Population, natural history, cascade |
-| | S-2 Calibration | Targets (S-1), parameters (S-2), GP emulator protocol, fit (S-3/S-4) |
-| | S-3 Loop-group classification | Definitions (S-5), algorithm pseudocode |
-| | S-4 Intervention scenarios | Eight scenarios (S-6) |
-| | S-5 Effective infectious-time | Phase definitions, HS delay formula |
-| | S-6 Complete parameter listing | 7 subsection tables (S-7.1 … S-7.7) |
-| | S-7 Sensitivity analyses | R_AMP, time-cost constants, target distributions |
-| | References | 11 cited works |
-
----
-
-## Key findings (at a glance)
-
-- Of 88,529 simulated active TB episodes, only **25% progressed via single-pass
-  cascade** (NoLooponly). 45% experienced diagnostic loops (TestLooponly), and
-  25% experienced both diagnostic loops and treatment failure (TestTxfail).
-- **Per-patient effective infectious time** differed substantially:
-  9.0 months (NoLoop) vs 14.0 (TestLoop) vs 22.2 (TestTxfail).
-- The 25% TestTxfail minority generated **42% of cascade-driven transmission**
-  (Pareto Gini ≈ 0.45).
-- ACF, Dx, and Tx interventions are **mechanistically complementary** rather
-  than substitutable: each acts on a different loop population.
-- **Comprehensive ACF+Dx+Tx achieves 79% incidence reduction by 2035**; no
-  single-component bundle reaches the End-TB 90% target.
-
----
-
-## Citation
-
-If you use this code or analysis in your work, please cite:
-
-> [Author list]. Cascade-of-Care Loops as Transmission Multipliers: A Loop-Group
-> Resolved Agent-Based Model of Tuberculosis in India. [Journal]. [Year];[Vol]:
-> [pages]. doi:[DOI]
-
----
-
-## Contact
-
-[Corresponding author name and email]
-
-For EMOD model questions: see <https://github.com/InstituteforDiseaseModeling/EMOD>.
+CC0 1.0 (see `LICENSE`), following the IDM `TB_India_DTK` repository this work builds on.

@@ -1,0 +1,137 @@
+{
+ "n_episodes": 25894,
+ "n_reps": 97,
+ "loop_fractions": {
+  "NoLoop only": {
+   "mean": 0.39271233954940776,
+   "iqr_lo": 0.37142857142857144,
+   "iqr_hi": 0.4175084175084175
+  },
+  "Test loop only": {
+   "mean": 0.26187394105092565,
+   "iqr_lo": 0.2412280701754386,
+   "iqr_hi": 0.2796934865900383
+  },
+  "Tx fail only": {
+   "mean": 0.09560800894279188,
+   "iqr_lo": 0.08108108108108109,
+   "iqr_hi": 0.10852713178294573
+  },
+  "Test + Tx fail": {
+   "mean": 0.2498057104568747,
+   "iqr_lo": 0.2332155477031802,
+   "iqr_hi": 0.264
+  },
+  "_any_treatment_failure": {
+   "mean": 0.3454137193996665
+  }
+ },
+ "delays": {
+  "subclinical": {
+   "mean": 91.51579516490307,
+   "median": 70.0,
+   "iqr_lo": 28.0,
+   "iqr_hi": 126.0,
+   "n": 25894
+  },
+  "patient": {
+   "mean": 100.2297057233336,
+   "median": 70.0,
+   "iqr_lo": 28.0,
+   "iqr_hi": 126.0,
+   "n": 25894
+  },
+  "hs_all": {
+   "mean": 338.81740943847996,
+   "median": 168.0,
+   "iqr_lo": 56.0,
+   "iqr_hi": 462.0,
+   "n": 25894
+  },
+  "hs_falseneg_loop": {
+   "mean": 526.4306299509619,
+   "median": 392.0,
+   "iqr_lo": 168.0,
+   "iqr_hi": 728.0,
+   "n": 13255
+  },
+  "hs_txfail_loop": {
+   "mean": 735.1611893583724,
+   "median": 602.0,
+   "iqr_lo": 392.0,
+   "iqr_hi": 924.0,
+   "n": 8946
+  },
+  "total_infectious": {
+   "mean": 530.5629103267166,
+   "median": 392.0,
+   "iqr_lo": 224.0,
+   "iqr_hi": 686.0,
+   "n": 25894
+  }
+ },
+ "effective_infectious_days": {
+  "NoLoop only": {
+   "mean": 135.2325285615967,
+   "median": 88.9336,
+   "iqr_lo": 50.0892,
+   "iqr_hi": 157.1556,
+   "n": 10171
+  },
+  "Test loop only": {
+   "mean": 281.66455682455364,
+   "median": 227.1556,
+   "iqr_lo": 143.1556,
+   "iqr_hi": 358.0892,
+   "n": 6777
+  },
+  "Tx fail only": {
+   "mean": 396.0840949756888,
+   "median": 314.02279999999996,
+   "iqr_lo": 246.0892,
+   "iqr_hi": 482.4113,
+   "n": 2468
+  },
+  "Test + Tx fail": {
+   "mean": 696.5425035504785,
+   "median": 563.1556,
+   "iqr_lo": 345.8672,
+   "iqr_hi": 891.2225,
+   "n": 6478
+  },
+  "ALL": {
+   "mean": 338.8440810226308,
+   "median": 228.9336,
+   "iqr_lo": 99.778,
+   "iqr_hi": 423.1556,
+   "n": 25894
+  }
+ },
+ "excess": {
+  "excess_dx_tests_per_ep": {
+   "mean": 1.0700934579439252,
+   "median": 1.0,
+   "iqr_lo": 0.0,
+   "iqr_hi": 2.0,
+   "n": 25894
+  },
+  "excess_dx_tests_cohort_total": 27709.0,
+  "excess_drugmonths_per_ep": {
+   "mean": 3.4516104116783812,
+   "median": 0.0,
+   "iqr_lo": 0.0,
+   "iqr_hi": 6.0,
+   "n": 25894
+  },
+  "excess_drugmonths_cohort_total": 89376.0,
+  "excess_persondays_per_ep": {
+   "mean": 300.01976026886257,
+   "median": 131.53475567790775,
+   "iqr_lo": 0.0,
+   "iqr_hi": 425.53475567790775,
+   "n": 25894
+  },
+  "excess_personyears_cohort_total": 21284.14156822446,
+  "noloop_mean_total_days": 260.46524432209225
+ }
+}

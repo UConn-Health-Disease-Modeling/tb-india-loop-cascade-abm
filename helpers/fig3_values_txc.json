@@ -1,0 +1,49 @@
+{
+ "cohort": "2015-2024",
+ "merge_txfail_only": true,
+ "n_episodes": 25894,
+ "n_reps_denominator": 98,
+ "panelB": {
+  "NoLooponly": {
+   "episode_share": 0.39279369738163283,
+   "burden_share": 0.1567637974954892
+  },
+  "TestLooponly": {
+   "episode_share": 0.2617208619757473,
+   "burden_share": 0.21755578665461645
+  },
+  "TestTxfail": {
+   "episode_share": 0.34548544064262,
+   "burden_share": 0.6256804158498942
+  }
+ },
+ "concentration": 1.8110181855597092,
+ "panelD_per1e5": {
+  "NoLooponly": {
+   "subclin_d": 17.516675541110725,
+   "patient_d": 19.65801490281007,
+   "hs_d": 12.986409424319225,
+   "total": 50.16109986824002
+  },
+  "TestLooponly": {
+   "subclin_d": 11.87200107118924,
+   "patient_d": 12.122769458929719,
+   "hs_d": 28.60482658846425,
+   "total": 52.599597118583205
+  },
+  "TestTxfail": {
+   "subclin_d": 15.48057407574645,
+   "patient_d": 17.36080681807542,
+   "hs_d": 124.52744605926911,
+   "total": 157.36882695309097
+  }
+ },
+ "panelD_total_all_groups": 260.12952393991424,
+ "phase_split_per1e5": {
+  "subclin": 44.86925068804643,
+  "patient": 49.14159117981521,
+  "hs": 166.1186820720526
+ },
+ "share_after_first_test": 0.6385998773073654,
+ "mean_active_tb_prevalence_per_1e5": 306.6878463132379
+}

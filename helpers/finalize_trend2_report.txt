@@ -1,0 +1,70 @@
+Combined wave-1 + wave-2 fit — trend re-calibration
+design points: 300 (200 x 10 reps + 100 x 25 reps)
+
+viable points (2020 incidence in [50,800]): 177/300  (wave1 78, wave2 99)
+
+burden emulators (log10 scale, alpha ~ 1/reps):
+  incidence_2000     CV R2 =  0.923
+  incidence_2010     CV R2 =  0.900
+  incidence_2015     CV R2 =  0.932
+  incidence_2020     CV R2 =  0.940
+  prevalence_2020    CV R2 =  0.949
+  mortality_2020     CV R2 =  0.838
+
+NROY volume: 5.76% of the prior (wave-1 only was 6.6%; viability gate keeps 37.0%)
+
+loose vs tight cascade (loose = 2024 treatment fraction < 0.82 and care-seeking < 2.0x):
+  loose n=107  passing 3 sigma:  47 (43.9%)  best max I = 0.27
+  tight n=193  passing 3 sigma:  31 (16.1%)  best max I = 0.68
+  best LOOSE point: wave2 design 4  max I 0.27  trend -2.17%/yr  tf2024 0.746  care-seeking x1.56  infectivity x0.71
+
+PRODUCTION POINT: wave2 design_id 4  (experiment 496ded25-37bc-f111-92f1-000d3af5294c)
+  max I on the 6 burden targets = 0.27
+  max I on the 7 cascade validation targets = 1.96
+  implied 2000-2020 trend -2.17%/yr (WHO -2.43%/yr)
+
+  calibration targets:
+    incidence_2000     model    316.2   target   322 +/- 54.7   I=0.11
+    incidence_2010     model    263.5   target   276 +/- 46.9   I=0.27
+    incidence_2015     model    232.3   target   237 +/- 40.3   I=0.12
+    incidence_2020     model    203.7   target   197 +/- 33.5   I=0.20
+    prevalence_2020    model    296.3   target   304 +/- 36.1   I=0.21
+    mortality_2020     model     32.2   target    33 +/- 6.0    I=0.14
+
+  cascade validation targets (3-sigma check only):
+    noloop_frac                model   0.317   target   0.2 +/- 0.06   I=1.96
+    testloop_frac              model   0.325   target   0.5 +/- 0.1    I=1.75
+    testtxfail_frac            model   0.358   target   0.3 +/- 0.07   I=0.83
+    tests_per_case_overall     model   3.008   target   3.5 +/- 0.78   I=0.63
+    tests_per_case_noloop      model   1.429   target   1.0 +/- 0.42   I=1.02
+    tests_per_case_testloop    model   1.997   target   3.0 +/- 0.92   I=1.09
+    tests_per_case_testtxfail  model   5.325   target   4.5 +/- 1.28   I=0.64
+
+  held-out years:
+    incidence_2005: model 264.7 vs WHO 311
+    incidence_2023: model 190.0 vs WHO 192
+
+  production parameters:
+    Base_Infectivity_Constant              0.0419562
+    TB Presymptomatic Duration Years       0.233044
+    Care Seeking Fast Duration Days        14.1705
+    Care Seeking Slow Duration Days        157.771
+    TB_Slow_Progressor_Rate                8.26585e-06
+    Post_Infection_Acquisition_Multiplier  0.31975
+    TB_Fast_Progressor_Fraction_Adult      0.0764745
+    tf_gain_per_year                       0.00172021
+    cs_gain_per_year                       0.0164967
+    infectivity_decline_per_year           0.0128311
+    sens_smear_pos_GXL                     0.65  (fixed)
+    treatment_fraction_LQ                  0.55  (fixed)
+
+  top 8 design points by burden fit:
+ wave  design_id  maxI_burden  maxI_cascade  inc_change_pct_per_yr  incidence_2020  tf_gain_per_year  cs_gain_per_year
+wave2          4       0.2673        1.9577                -2.1745        203.7065            0.0017            0.0165
+wave2         93       0.6817        2.8969                -1.4974        213.4236            0.0079            0.0097
+wave2         42       0.7704        2.2428                -1.7857        195.1787            0.0023            0.0084
+wave2         47       0.7744        2.5874                -3.4340        178.7653            0.0036            0.0071
+wave2         20       0.7764        1.5652                -2.7272        208.8589            0.0004            0.0082
+wave2         79       0.8041        2.3165                -2.0458        202.4010            0.0100            0.0142
+wave2         49       0.8416        1.7164                -1.9763        200.1757            0.0014            0.0112
+wave2         61       1.0185        1.7628                -2.5346        195.3987            0.0016            0.0127

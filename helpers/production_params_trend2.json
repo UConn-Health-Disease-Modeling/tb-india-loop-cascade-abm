@@ -1,0 +1,113 @@
+{
+ "production": {
+  "Base_Infectivity_Constant": 0.0419561921123124,
+  "TB Presymptomatic Duration Years": 0.2330436272992007,
+  "Care Seeking Fast Duration Days": 14.170451537838758,
+  "Care Seeking Slow Duration Days": 157.77075650568554,
+  "TB_Slow_Progressor_Rate": 8.265850430929792e-06,
+  "Post_Infection_Acquisition_Multiplier": 0.3197498251614573,
+  "TB_Fast_Progressor_Fraction_Adult": 0.0764744993503116,
+  "tf_gain_per_year": 0.0017202096282671,
+  "cs_gain_per_year": 0.0164967327813104,
+  "infectivity_decline_per_year": 0.0128311263239953,
+  "sens_smear_pos_GXL": 0.65,
+  "treatment_fraction_LQ": 0.55
+ },
+ "source": {
+  "wave": "wave2",
+  "design_id": 4,
+  "experiment": "496ded25-37bc-f111-92f1-000d3af5294c"
+ },
+ "maxI_burden": 0.26731328019727474,
+ "maxI_cascade": 1.9576631107246751,
+ "trend_pct_per_yr": -2.17450018015376,
+ "nroy_fraction": 0.0576075,
+ "emulator_cv_r2": {
+  "incidence_2000": 0.923001431792903,
+  "incidence_2010": 0.8996855808136351,
+  "incidence_2015": 0.9319917157886104,
+  "incidence_2020": 0.9404116205875187,
+  "prevalence_2020": 0.9494863558019649,
+  "mortality_2020": 0.8384330102660335
+ },
+ "targets": {
+  "incidence_2000": {
+   "z": 322,
+   "sigma": 54.7,
+   "model": 316.2011099261612,
+   "I": 0.10601261560948404
+  },
+  "incidence_2010": {
+   "z": 276,
+   "sigma": 46.9,
+   "model": 263.4630071587478,
+   "I": 0.26731328019727474
+  },
+  "incidence_2015": {
+   "z": 237,
+   "sigma": 40.3,
+   "model": 232.2540630353768,
+   "I": 0.11776518522638244
+  },
+  "incidence_2020": {
+   "z": 197,
+   "sigma": 33.5,
+   "model": 203.70650631698345,
+   "I": 0.20019421841741641
+  },
+  "prevalence_2020": {
+   "z": 304,
+   "sigma": 36.1,
+   "model": 296.2527006756425,
+   "I": 0.214606629483588
+  },
+  "mortality_2020": {
+   "z": 33,
+   "sigma": 6.0,
+   "model": 32.16574107632843,
+   "I": 0.1390431539452616
+  },
+  "noloop_frac": {
+   "z": 0.2,
+   "sigma": 0.06,
+   "model": 0.3174597866434805,
+   "I": 1.9576631107246751
+  },
+  "testloop_frac": {
+   "z": 0.5,
+   "sigma": 0.1,
+   "model": 0.3247834665418185,
+   "I": 1.752165334581815
+  },
+  "testtxfail_frac": {
+   "z": 0.3,
+   "sigma": 0.07,
+   "model": 0.3577567468147009,
+   "I": 0.8250963830671555
+  },
+  "tests_per_case_overall": {
+   "z": 3.5,
+   "sigma": 0.78,
+   "model": 3.007557770123399,
+   "I": 0.6313361921494883
+  },
+  "tests_per_case_noloop": {
+   "z": 1.0,
+   "sigma": 0.42,
+   "model": 1.4291583271884547,
+   "I": 1.0218055409248923
+  },
+  "tests_per_case_testloop": {
+   "z": 3.0,
+   "sigma": 0.92,
+   "model": 1.9971169686985173,
+   "I": 1.090090251414655
+  },
+  "tests_per_case_testtxfail": {
+   "z": 4.5,
+   "sigma": 1.28,
+   "model": 5.325481398392223,
+   "I": 0.6449073424939243
+  }
+ }
+}

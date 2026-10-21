@@ -1,0 +1,21 @@
+Wave-2 design (round 2), weighted toward a loose cascade
+wave-1 experiment: af707f22-16bc-f111-92f1-000d3af5294c
+design points: 200, viable: 78
+
+viability classifier 5-fold CV AUC = 0.878
+
+burden emulators (log10):
+  incidence_2000     CV R2 =  0.834
+  incidence_2010     CV R2 =  0.785
+  incidence_2015     CV R2 =  0.822
+  incidence_2020     CV R2 =  0.882
+  prevalence_2020    CV R2 =  0.870
+  mortality_2020     CV R2 =  0.790
+
+emulator NROY: 7.13% of the prior (35,647 candidates); of those 18.9% are LOOSE (2024 treatment fraction < 0.82, care-seeking < 2.0x)
+allocating 70 points to the loose stratum and 30 to the rest
+
+wrote wave2_design_trend2.csv (100 points)
+  2024 treatment fraction : 0.71 - 0.97 (median 0.77); 76 below 0.82
+  care-seeking multiplier : x1.10 - x3.08 (median x1.43); 82 below 2.0x
+  infectivity multiplier  : x0.60 - x0.96 (median x0.81)

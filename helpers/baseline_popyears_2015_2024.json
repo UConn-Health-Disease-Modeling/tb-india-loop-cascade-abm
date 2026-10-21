@@ -1,0 +1,11 @@
+{
+ "span": "2015-2024",
+ "rule": "2015.0 <= year < 2025.0 (ten calendar years)",
+ "n_replicates": 98,
+ "statistical_person_years_per_replicate": 2952959.154598826,
+ "sampling_rate": 0.05,
+ "agent_person_years_per_replicate": 147647.95772994132,
+ "mean_active_tb_prevalence_per_1e5": 306.6878463132379,
+ "experiment": "d892bdf7-18bd-f111-92f1-000d3af5294c",
+ "note": "ReportEventRecorder counts agents, InsetChart reports the statistical population, so episode person-years must be divided by the AGENT population-years (statistical x Base_Individual_Sample_Rate). All baseline replicates are included, including the one that fades out before 1960."
+}

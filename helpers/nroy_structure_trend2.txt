@@ -1,0 +1,65 @@
+NROY: 5.76% of prior (23,043 of 400,000 draws); viability gate keeps 37.0%
+
+1. Spearman correlations among NROY draws (prior draws are independent, so any correlation is induced by the targets):
+   -0.68  infectivity     ~ slow_prog_rate
+   -0.35  infectivity     ~ fast_frac
+   -0.30  infectivity     ~ reinfect_mult
+   -0.23  infectivity     ~ cs_delay_slow
+   -0.17  cs_delay_slow   ~ slow_prog_rate
+   +0.14  slow_prog_rate  ~ cs_improve
+   -0.12  reinfect_mult   ~ fast_frac
+   -0.10  reinfect_mult   ~ cs_improve
+   +0.08  slow_prog_rate  ~ reinfect_mult
+   -0.08  infectivity     ~ presymp_dur
+   (remaining 35 pairs all |r| <= 0.08)
+
+2. Retained 5-95% span of each parameter (percent of prior), overall and within terciles of base infectivity:
+   parameter         overall  inf low  inf mid inf high
+   infectivity           52%      18%      14%      25%
+   presymp_dur           90%      90%      89%      90%
+   cs_delay_fast         90%      89%      90%      89%
+   cs_delay_slow         90%      85%      91%      88%
+   slow_prog_rate        64%      51%      53%      43%
+   reinfect_mult         87%      88%      87%      78%
+   fast_frac             90%      88%      89%      84%
+   tx_init_gain          88%      87%      89%      89%
+   cs_improve            89%      89%      90%      88%
+   inf_decline           89%      89%      90%      88%
+   median of each parameter within infectivity terciles (unit scale, 0-1):
+   slow_prog_rate      0.55     0.33     0.18 
+   fast_frac           0.59     0.44     0.27 
+   reinfect_mult       0.43     0.34     0.20 
+   cs_delay_slow       0.62     0.54     0.41 
+
+3. Marginal shift: median of retained draws minus 0.5 (prior median), unit scale:
+   infectivity      +0.142   span 52%
+   presymp_dur      -0.029   span 90%
+   cs_delay_fast    -0.001   span 90%
+   cs_delay_slow    +0.024   span 90%
+   slow_prog_rate   -0.153   span 64%
+   reinfect_mult    -0.189   span 87%
+   fast_frac        -0.081   span 90%
+   tx_init_gain     -0.015   span 88%
+   cs_improve       -0.023   span 89%
+   inf_decline      -0.007   span 89%
+
+4. Care-cascade benchmarks across the 78 simulated design points with burden max I <= 3 (of 300):
+   benchmark                   SD(all)   SD(ok)   sigma SD/sigma        range (ok)
+   noloop_frac                   0.111    0.030    0.06     0.51     0.24 -   0.40
+   testloop_frac                 0.062    0.022    0.10     0.22     0.26 -   0.35
+   testtxfail_frac               0.093    0.018    0.07     0.26     0.34 -   0.42
+   tests_per_case_overall        0.763    0.259    0.78     0.33     2.65 -   3.89
+   tests_per_case_noloop         0.288    0.161    0.42     0.38     1.34 -   1.98
+   tests_per_case_testloop       0.382    0.107    0.92     0.12     1.74 -   2.23
+   tests_per_case_testtxfail     0.909    0.340    1.28     0.27     4.85 -   6.51
+   sens_smear_pos_GXL: constant across design (value 0.65)
+   treatment_fraction_LQ: constant across design (value 0.55)
+
+   Spearman correlation of each cascade benchmark with the free parameters (burden-plausible simulated points):
+   noloop_frac                cs_delay_slow +0.73  tx_init_gain +0.55  slow_prog_rate -0.44
+   testloop_frac              tx_init_gain -0.90  cs_delay_slow -0.40  slow_prog_rate +0.23
+   testtxfail_frac            cs_delay_slow -0.76  cs_improve +0.72  slow_prog_rate +0.49
+   tests_per_case_overall     cs_delay_slow -0.82  cs_improve +0.67  slow_prog_rate +0.51
+   tests_per_case_noloop      cs_improve +0.74  cs_delay_slow -0.69  tx_init_gain +0.40
+   tests_per_case_testloop    tx_init_gain -0.85  cs_delay_slow -0.43  slow_prog_rate +0.28
+   tests_per_case_testtxfail  cs_delay_slow -0.83  cs_improve +0.65  slow_prog_rate +0.51

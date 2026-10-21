@@ -1,0 +1,126 @@
+{
+ "cohort": "2015-2024 (2015.0 <= act_year < 2025.0, ten calendar years)",
+ "supersedes": "2026-10-05 morning numbers, which used act_year <= 2024.0 (nine years, 23,399 episodes) over a ten-year person-year denominator",
+ "n_episodes": 25894,
+ "n_replicates_with_cohort_episodes": 97,
+ "n_replicates_denominator": 98,
+ "agent_person_years_per_replicate": 147647.95772994132,
+ "mean_active_tb_prevalence_per_1e5": 306.6878463132379,
+ "grouping": "per episode (n_testneg / n_testdef / n_txfail)",
+ "groups": {
+  "NoLooponly": {
+   "episode_share": 0.3927,
+   "episode_share_iqr": [
+    0.371,
+    0.418
+   ],
+   "median_effective_months": 2.92,
+   "median_total_months": 7.36,
+   "mean_segments_months": {
+    "subclin": 2.99,
+    "patient": 3.35,
+    "dxloop": 0.42,
+    "txfail": 0.0,
+    "ontx": 1.8
+   },
+   "mean_effective_months": 4.44,
+   "pct_tested": 70.4
+  },
+  "TestLooponly": {
+   "episode_share": 0.2619,
+   "episode_share_iqr": [
+    0.241,
+    0.28
+   ],
+   "median_effective_months": 7.46,
+   "median_total_months": 11.96,
+   "mean_segments_months": {
+    "subclin": 3.04,
+    "patient": 3.1,
+    "dxloop": 5.46,
+    "txfail": 0.0,
+    "ontx": 1.86
+   },
+   "mean_effective_months": 9.25,
+   "pct_tested": 100.0
+  },
+  "TxFailonly": {
+   "episode_share": 0.0956,
+   "episode_share_iqr": [
+    0.081,
+    0.109
+   ],
+   "median_effective_months": 10.32,
+   "median_total_months": 18.86,
+   "mean_segments_months": {
+    "subclin": 2.94,
+    "patient": 3.42,
+    "dxloop": 0.0,
+    "txfail": 8.92,
+    "ontx": 5.85
+   },
+   "mean_effective_months": 13.01,
+   "pct_tested": 100.0
+  },
+  "TestTxfail": {
+   "episode_share": 0.2498,
+   "episode_share_iqr": [
+    0.233,
+    0.264
+   ],
+   "median_effective_months": 18.5,
+   "median_total_months": 29.89,
+   "mean_segments_months": {
+    "subclin": 3.02,
+    "patient": 3.35,
+    "dxloop": 3.2,
+    "txfail": 15.66,
+    "ontx": 8.87
+   },
+   "mean_effective_months": 22.88,
+   "pct_tested": 100.0
+  }
+ },
+ "burden_share_fig3": {
+  "NoLooponly": 0.1568,
+  "TestLooponly": 0.2176,
+  "TestTxfail": 0.5143
+ },
+ "concentration": 2.056,
+ "panelA_per_100_episodes": {
+  "tests_any": 233.6,
+  "test_neg": 75.2,
+  "test_default": 31.8,
+  "tx_start": 80.1,
+  "tx_fail": 57.4,
+  "self_clear": 82.0,
+  "tb_death": 18.0
+ },
+ "panelD_per_1e5_per_year": {
+  "NoLooponly": {
+   "subclin_d": 17.5,
+   "patient_d": 19.7,
+   "hs_d": 13.0,
+   "total": 50.2
+  },
+  "TestLooponly": {
+   "subclin_d": 11.9,
+   "patient_d": 12.1,
+   "hs_d": 28.6,
+   "total": 52.6
+  },
+  "TestTxfail": {
+   "subclin_d": 11.3,
+   "patient_d": 12.5,
+   "hs_d": 103.5,
+   "total": 127.3
+  }
+ },
+ "panelD_total_all_groups": 260.1,
+ "phase_split_per_1e5": {
+  "subclin": 44.9,
+  "patient": 49.1,
+  "hs": 166.1
+ },
+ "share_after_first_test": 0.6386
+}
