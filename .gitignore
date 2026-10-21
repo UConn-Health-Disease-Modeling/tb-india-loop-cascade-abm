@@ -1,11 +1,11 @@
 # raw COMPS experiment outputs (tens of GB) are never committed; only the two
-# small calibration summary tables under <experiment-id>/calibration/ are kept
-*/*/InsetChart.json
-*/*/ReportEventRecorder.csv
-*/*/PropertyReportTB.json
-*/*/Report_TBHIV_ByAge.csv
-*/*/config.json
-*/results.db
+# small calibration summary tables under calibration/wave*/ are kept
+**/InsetChart.json
+**/ReportEventRecorder.csv
+**/PropertyReportTB.json
+**/Report_TBHIV_ByAge.csv
+**/config.json
+**/results.db
 download/
 __pycache__/
 *.py[cod]

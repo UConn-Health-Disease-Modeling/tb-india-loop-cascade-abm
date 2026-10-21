@@ -1,3 +1,5 @@
+> Development notes kept for the record. Script and file names refer to the working repository at the time they were written; the final pipeline and layout are described in the top-level README.
+
 # Trend re-calibration and 2025 intervention start — run plan (2026-09-09)
 
 Decisions taken: recalibrate against the WHO incidence trend (option b), re-run the
@@ -31,7 +33,7 @@ takes over. Net trend 2000–2020: **+0.05%/yr**, against WHO's **−2.43%/yr**.
   `tf_gain_per_year` (0–0.012, guess 0.006) and
   `cs_gain_per_year` (0–0.050, guess 0.020).
 
-### `helpers/campaign_trend.py` (new)
+### `analysis/campaign_trend.py` (new)
 Replaces the two hand-set epochs with a monotone cascade-improvement schedule
 1997 → 2024, in 3-year sub-epochs:
 - `cascade_schedule(params, tf_gain, cs_gain, dx_boost, tx_boost, sens_pos_GXL)`
@@ -52,7 +54,7 @@ would be a *worsening*). It is now defined relative to the calibrated baseline:
 pre-treatment loss. `TX_BOOST_LOSS_REDUCTION` in `campaign_trend.py`.
 Table 3 and the Methods text will need this wording.
 
-### `helpers/targets_trend.py` (new)
+### `analysis/targets_trend.py` (new)
 Calibration targets change from three cross-sectional 2020 anchors to a
 four-point WHO incidence trajectory plus the 2020 prevalence and mortality
 anchors:
@@ -80,14 +82,14 @@ Split is unchanged in spirit: **6 burden targets are emulator-gated calibration
 targets; the 7 cascade targets stay validation-only** (3-sigma check at the
 best fit).
 
-### `helpers/calibration_wave1_lhs_trend.py` (new)
+### `analysis/calibration_wave1_lhs_trend.py` (new)
 200-point Latin hypercube over the 10 free parameters (the previous 8 plus the
 two improvement parameters); `sens_smear_pos_GXL` and `treatment_fraction_LQ`
 are written as constant columns so the notebook's sweep shape is unchanged.
-Output: `helpers/wave1_design_trend.csv` (already generated).
+Output: `analysis/wave1_design_trend.csv` (already generated).
 LHS is implemented in numpy — scipy is not installed in this environment.
 
-### `helpers/compute_targets_trend.py` (new)
+### `analysis/compute_targets_trend.py` (new)
 Same pipeline as `compute_wave1_targets.py`, extracting incidence at 2000, 2005,
 2010, 2015, 2020 and 2023 instead of 2020 alone, and reporting the implied
 annualised trend per design point. Checkpointed and resumable.
@@ -96,7 +98,7 @@ annualised trend per design point. Checkpointed and resumable.
 
 v19 is left untouched; v20 is the run notebook. Applied edits:
 
-- **Cell 5** — `CAL_DESIGN_CSV = 'helpers/wave1_design_trend.csv'`.
+- **Cell 5** — `CAL_DESIGN_CSV = 'analysis/wave1_design_trend.csv'`.
 - **Cell 14 `build_camp`** — signature gains `tf_gain_per_year=0.0,
   cs_gain_per_year=0.0`; imports `cascade_schedule` / `careseeking_schedule`.
   - the two DOTS-era-onward HSB blocks are replaced by one loop over
@@ -121,7 +123,7 @@ v19 is left untouched; v20 is the run notebook. Applied edits:
 Checks run after patching: all three cells compile; no orphan references to the
 removed `_gxl_tf` / `_base_tf` / `_gxl_sens_*` locals; resistance diagnostics,
 treatment blocks, ACF and HSB blocks all still present; both schedules partition
-1997–2050 with no gaps or overlaps; `from helpers.campaign_trend import ...`
+1997–2050 with no gaps or overlaps; `from analysis.campaign_trend import ...`
 resolves from the repo root.
 
 ## 4. The campaign-callback bug (fixed in v20, still needs verification)
@@ -157,9 +159,9 @@ published calibration inherits it — which would need saying in the paper.
 2. Smoke test: `SCENARIO='base'`, 2 replicates. Check that
    incidence declines over 2000–2020 for a design point with `tf_gain` near the
    top of its prior, and is flat for `tf_gain = 0`.
-3. Wave 1: `SCENARIO='wave1_cal'`, `CAL_DESIGN_CSV='helpers/wave1_design_trend.csv'`,
+3. Wave 1: `SCENARIO='wave1_cal'`, `CAL_DESIGN_CSV='analysis/wave1_design_trend.csv'`,
    200 design points x 10 replicates = 2,000 sims.
-4. `python helpers/compute_targets_trend.py <wave1_uid>` → burden emulator, NROY,
+4. `python analysis/compute_targets_trend.py <wave1_uid>` → burden emulator, NROY,
    wave-2 design.
 5. Wave 2: 100 points in the NROY x 25 replicates = 2,500 sims, then the same
    target script.
@@ -197,7 +199,7 @@ published calibration inherits it — which would need saying in the paper.
 
 # Wave 1 results — experiment `fe725f4e-39b8-f111-92f1-000d3af5294c` (2026-09-24)
 
-200 design points x 10 replicates. Processed with `helpers/compute_targets_trend.py`.
+200 design points x 10 replicates. Processed with `analysis/compute_targets_trend.py`.
 
 ## The re-calibration works
 
@@ -242,7 +244,7 @@ shortening patient delay. Raising treatment initiation further acts only on
 patients already diagnosed and barely moves incidence. This belongs in the
 Discussion — it is a cascade-mechanism result, not a technical detail.
 
-## Wave-2 design — `helpers/wave2_design_trend.py`
+## Wave-2 design — `analysis/wave2_design_trend.py`
 
 The naive "refined box" recipe does not apply here: only 7% of wave-1 points
 (14/200) pass, yet the per-parameter marginal ranges shrink to just 77-99% of the
@@ -267,7 +269,7 @@ Validation against the wave-1 simulations: **all 14 actual NROY points are
 retained** (no known-good region is excluded), 177/186 non-NROY points are
 correctly rejected, and best-fit design 136 is retained.
 
-Output: `helpers/wave2_design_trend.csv` — 100 points chosen as k-means
+Output: `analysis/wave2_design_trend.csv` — 100 points chosen as k-means
 centroids of the accepted candidates (median emulator implausibility 1.96).
 
 ## Running wave 2
@@ -275,7 +277,7 @@ centroids of the accepted candidates (median emulator implausibility 1.96).
 In `01_India_TB_v20_simulation_trend.ipynb`, cell 5:
 
     SCENARIO       = 'wave2_cal'
-    CAL_DESIGN_CSV = 'helpers/wave2_design_trend.csv'
+    CAL_DESIGN_CSV = 'analysis/wave2_design_trend.csv'
     replicates     = 25
 
 100 x 25 = 2,500 simulations. 25 replicates (not 10) because the earlier waves
@@ -284,6 +286,6 @@ cascade Monte-Carlo noise.
 
 Then:
 
-    python helpers/compute_targets_trend.py <wave2_uid>
+    python analysis/compute_targets_trend.py <wave2_uid>
 
 and the combined wave-1 + wave-2 fit selects the production parameter set.

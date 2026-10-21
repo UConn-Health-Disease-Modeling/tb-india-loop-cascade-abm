@@ -1,3 +1,5 @@
+> Development notes kept for the record. Script and file names refer to the working repository at the time they were written; the final pipeline and layout are described in the top-level README.
+
 # Wave-2 Calibration Workflow — 10 Free Parameters (200+100 design)
 
 Standard 2-wave history-matching protocol following Vesga et al. 2019.
@@ -23,21 +25,21 @@ Asymmetric 200 + 100 design (Vesga 2019 style) chosen to:
 
 | File | Purpose |
 |------|---------|
-| `helpers/calibration_wave1_lhs.py`     | Generates `wave1_design.csv` (100 LHS points) |
-| `helpers/wave1_design.csv`             | ✅ Generated (100 × 10 params) |
+| `analysis/calibration_wave1_lhs.py`     | Generates `wave1_design.csv` (100 LHS points) |
+| `analysis/wave1_design.csv`             | ✅ Generated (100 × 10 params) |
 | `01_India_TB_v12_simulation_calibration.ipynb` | Submits sims to COMPS in `SCENARIO='wave1_cal'` or `'wave2_cal'` mode |
-| `helpers/calibration_emulator_nroy.py` | Fits GP emulator, computes NROY |
-| `helpers/calibration_wave2_lhs.py`     | Generates `wave2_design.csv` from wave-1 NROY |
+| `analysis/calibration_emulator_nroy.py` | Fits GP emulator, computes NROY |
+| `analysis/calibration_wave2_lhs.py`     | Generates `wave2_design.csv` from wave-1 NROY |
 
 ## Workflow
 
 ### Step 1 — Wave-1 LHS design (✅ done)
 
 ```bash
-python helpers/calibration_wave1_lhs.py
+python analysis/calibration_wave1_lhs.py
 ```
 
-Produces `helpers/wave1_design.csv` (100 design points × 10 params).
+Produces `analysis/wave1_design.csv` (100 design points × 10 params).
 
 ### Step 2 — Wave-1 sweep on COMPS
 
@@ -45,7 +47,7 @@ In `01_India_TB_v12_simulation_calibration.ipynb`:
 
 ```python
 SCENARIO       = 'wave1_cal'
-CAL_DESIGN_CSV = 'helpers/wave1_design.csv'
+CAL_DESIGN_CSV = 'analysis/wave1_design.csv'
 replicates     = 10
 ```
 
@@ -56,7 +58,7 @@ replicates     = 10
 After wave-1 experiment completes:
 
 ```bash
-python helpers/calibration_emulator_nroy.py <wave1_exp_uid> --wave 1
+python analysis/calibration_emulator_nroy.py <wave1_exp_uid> --wave 1
 ```
 
 Produces:
@@ -68,10 +70,10 @@ Produces:
 ### Step 4 — Wave-2 LHS within NROY
 
 ```bash
-python helpers/calibration_wave2_lhs.py <wave1_exp_uid> --n 100
+python analysis/calibration_wave2_lhs.py <wave1_exp_uid> --n 100
 ```
 
-Produces `helpers/wave2_design.csv` (100 design points constrained to NROY).
+Produces `analysis/wave2_design.csv` (100 design points constrained to NROY).
 
 ### Step 5 — Wave-2 sweep
 
@@ -79,7 +81,7 @@ In v12 notebook:
 
 ```python
 SCENARIO       = 'wave2_cal'
-CAL_DESIGN_CSV = 'helpers/wave2_design.csv'
+CAL_DESIGN_CSV = 'analysis/wave2_design.csv'
 replicates     = 10
 ```
 
@@ -88,7 +90,7 @@ replicates     = 10
 ### Step 6 — Wave-2 emulator + final NROY
 
 ```bash
-python helpers/calibration_emulator_nroy.py <wave2_exp_uid> --wave 2
+python analysis/calibration_emulator_nroy.py <wave2_exp_uid> --wave 2
 ```
 
 Final NROY volume should be < 5% of prior. Best-fit point becomes the
