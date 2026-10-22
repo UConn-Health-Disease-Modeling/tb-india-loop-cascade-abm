@@ -238,6 +238,15 @@ def plot():
         for xi, v in enumerate(bottom):
             ax.text(xi, v * 1.02, f"{v:,.2f}" if v < 10 else f"{v:,.0f}",
                     ha="center", fontsize=14.2, fontweight="bold")
+        # the health-system-delay segment is the quantity the text discusses
+        # (64% of person-time after the first test; four fifths of the
+        # treatment-failure group, a quarter of the no-loop group), so its
+        # value is printed inside the purple segment
+        hs_vals = tab["hs_d"].values
+        for xi, (hv, top) in enumerate(zip(hs_vals, bottom)):
+            ax.text(xi, top - hv / 2, f"{hv:,.2f}" if top < 10 else f"{hv:,.0f}",
+                    ha="center", va="center", fontsize=13.5, color="white",
+                    fontweight="bold")
         ax.set_xticks(np.arange(len(show)))
         ax.set_xticklabels([GLAB[g].replace(" (single pass)", "").replace(" + ", "\n+ ").replace("Any treatment failure", "Any treatment\nfailure")
                             for g in show], fontsize=14.9)
