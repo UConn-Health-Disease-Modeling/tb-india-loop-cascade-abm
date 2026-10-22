@@ -122,5 +122,29 @@
   "patient": 49.1,
   "hs": 166.1
  },
- "share_after_first_test": 0.6386
+ "share_after_first_test": 0.6386,
+ "effective_infectious_time_3group": {
+  "note": "3-group (any treatment failure merged), per-episode grouping, 2015-2024 cohort; months = days/30.44; source of the abstract's 3 vs 16 months",
+  "NoLooponly": {
+   "n": 10171,
+   "median_effective_days": 88.9,
+   "median_effective_months": 2.92,
+   "mean_effective_months": 4.44,
+   "effective_days_share": 0.1568
+  },
+  "TestLooponly": {
+   "n": 6777,
+   "median_effective_days": 227.2,
+   "median_effective_months": 7.46,
+   "mean_effective_months": 9.25,
+   "effective_days_share": 0.2176
+  },
+  "AnyTxFail": {
+   "n": 8946,
+   "median_effective_days": 477.8,
+   "median_effective_months": 15.7,
+   "mean_effective_months": 20.16,
+   "effective_days_share": 0.6257
+  }
+ }
 }
