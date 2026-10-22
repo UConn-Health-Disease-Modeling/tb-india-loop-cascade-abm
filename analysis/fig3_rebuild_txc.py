@@ -270,7 +270,7 @@ def plot():
     print(total_py.round(1).assign(total=total_py.sum(axis=1).round(1)).to_string())
     print(f"  cohort total {total_py.values.sum():.1f} vs mean Active TB Prevalence "
           f"{PY['mean_active_tb_prevalence_per_1e5']:.1f} per 100,000 over the window")
-    print(f"  share of infectious time after the first test: "
+    print(f"  share of active TB person-time (unweighted) after the first test: "
           f"{d.hs.sum() / (d.hs.sum() + d.patient.sum() + d.subclin.sum()):.4f}")
     pd_groups = {}
     for g in show:
