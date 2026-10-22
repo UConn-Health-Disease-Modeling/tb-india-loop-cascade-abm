@@ -243,10 +243,12 @@ def plot():
         # treatment-failure group, a quarter of the no-loop group), so its
         # value is printed inside the purple segment
         hs_vals = tab["hs_d"].values
+        ymax = bottom.max() * 1.18
         for xi, (hv, top) in enumerate(zip(hs_vals, bottom)):
+            small = hv < 0.12 * ymax          # thin segment: smaller type, no clash with the total
             ax.text(xi, top - hv / 2, f"{hv:,.2f}" if top < 10 else f"{hv:,.0f}",
-                    ha="center", va="center", fontsize=13.5, color="white",
-                    fontweight="bold")
+                    ha="center", va="center", fontsize=11.5 if small else 13.5,
+                    color="white", fontweight="bold")
         ax.set_xticks(np.arange(len(show)))
         ax.set_xticklabels([GLAB[g].replace(" (single pass)", "").replace(" + ", "\n+ ").replace("Any treatment failure", "Any treatment\nfailure")
                             for g in show], fontsize=14.9)
