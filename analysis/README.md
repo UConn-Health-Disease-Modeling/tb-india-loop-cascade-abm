@@ -64,7 +64,7 @@ Figures are written to `figures/reproduced/` under the same file names as the ma
 | `calibration_final_fit_report.txt` | `calib4`, `calib5` | — |
 | `cohort_2015_2024_numbers.json` | — | headline numbers for the 2015–2024 cohort |
 | `figure1_values.json` | `extract1` | `figure1` |
-| `figure3_values.json`, `figure4_values.csv`, `figure5_parameter_uncertainty.csv` | the figure script of the same number | — (numbers quoted in the text) |
+| `figure3_values.json`, `figure4_values.csv`, `figure4_loop_interval.csv`, `figure5_parameter_uncertainty.csv` | the figure script of the same number | — (numbers quoted in the text) |
 | `loop_closure_sweep_incidence.csv.gz` | `extract6` | `figureS2` |
 | `nroy_marginals.csv` | `calib5` | `calib6` |
 | `nroy_parameter_sets.json` | the 20 parameter sets drawn from the not-ruled-out region | `simulation/3b_parameter_propagation_run.py` |

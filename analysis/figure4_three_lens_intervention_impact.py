@@ -16,7 +16,9 @@ scenarios), reported in the caption.
 Uses episodes activating from 2025 (when the interventions switch on in the
 simulations) so that pre-intervention episodes do not dilute the contrast.
 
-Writes figures/reproduced/Figure4_three_lens_intervention_impact.png and analysis/derived/figure4_values.csv
+Writes figures/reproduced/Figure4_three_lens_intervention_impact.png,
+analysis/derived/figure4_values.csv and analysis/derived/figure4_loop_interval.csv
+(untreated diagnostic-loop days per loop event, quoted in the text).
 """
 from __future__ import annotations
 import io, sys
@@ -163,10 +165,29 @@ def plot(v: pd.DataFrame):
     print("saved", p)
 
 
+def loop_interval() -> pd.DataFrame:
+    """Untreated diagnostic-loop days per loop event, by scenario.
+
+    Diagnostic-loop time is summed over the episodes activating in WINDOW and over
+    replicates, then divided by the number of loop events (false-negative tests
+    plus test defaults) in the same episodes.  The Results and Discussion quote it
+    as the interval to repeat testing (Baseline 63 days, ACF 17, Dx 61).
+    """
+    d = pd.read_csv(DATA / "scenario_episodes.csv.gz")
+    s = d[d.window == WINDOW].groupby("scenario")[["dxloop_d", "testneg", "testdef"]].sum()
+    out = (s.dxloop_d / (s.testneg + s.testdef)).rename("days_per_loop_event")
+    return out.reindex(ORDER).reset_index()
+
+
 if __name__ == "__main__":
     v = build()
     v.to_csv(DATA / "figure4_values.csv", index=False)
+    gap = loop_interval()
+    gap.to_csv(DATA / "figure4_loop_interval.csv", index=False)
+    print(gap.round(1).to_string(index=False))
     plot(v)
-    print("max paired 95pct CI half-width: {:.2f} pp".format(v.ci.max()))
+    # the figure draws lenses B and D only, so the figure note quotes their maximum
+    print("max paired 95pct CI half-width in the drawn cells (lenses B, D): {:.2f} pp"
+          .format(v[v.lens.isin(["B", "D"])].ci.max()))
     print(v[v.lens == "D"].pivot(index="row", columns="scenario", values="mean")
           [ORDER].round(0).to_string())
