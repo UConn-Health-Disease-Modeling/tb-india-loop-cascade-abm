@@ -5,11 +5,13 @@ experiment d892bdf7-18bd-f111-92f1-000d3af5294c).
 
 Episode durations come from the model's own event timestamps, not from an
 assumption-based reconstruction with fixed times per test or treatment
-failure.  Within the small treatment-failure-only group, burden can rise under
-an intervention purely because interventions move patients INTO that group
-(a composition effect).  The resource lens reports excess resource use.  Each
-cell carries a paired-replicate 95% CI (same seeds across scenarios), reported
-in the caption.
+failure.  The figure draws the loop-event lens (D) and the delay-phase lens
+(B).  The loop-group lens (A) and the resource lens (C) are computed into
+figure4_values.csv but not drawn: lens A moves with the reclassification of
+patients between loop groups rather than with any per-patient effect, so a
+group's burden can rise under an intervention purely because patients move
+into it.  Each cell carries a paired-replicate 95% CI (same seeds across
+scenarios), reported in the caption.
 
 Uses episodes activating from 2025 (when the interventions switch on in the
 simulations) so that pre-intervention episodes do not dilute the contrast.
