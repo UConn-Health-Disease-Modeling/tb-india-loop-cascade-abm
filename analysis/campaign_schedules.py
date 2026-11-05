@@ -1,14 +1,14 @@
-"""Time-varying cascade schedule for the trend-calibrated re-run (2026-09).
+"""Time-varying cascade schedules used to build the EMOD campaign.
 
 WHY THIS EXISTS
 ---------------
-The published baseline holds cascade performance constant after 2012 and, worse,
-steps the treatment-initiation fraction DOWN from 0.70 (DOTS era) to 0.55 at
+An earlier version of the model held cascade performance constant after 2012
+and, worse, stepped the treatment-initiation fraction DOWN from 0.70 (DOTS era) to 0.55 at
 GeneXpert introduction -- a value that was hand-tuned to hit the tests-per-case
-cascade target.  The consequence is a simulated incidence trajectory that is flat
+cascade target.  The consequence was a simulated incidence trajectory that was flat
 over 2000-2020 (+0.05%/yr) and rising thereafter (+0.59%/yr), whereas WHO
 estimates India's incidence fell from 322 to 197 per 100,000 over 2000-2020
-(-2.4%/yr).  Sourya's comment #64.
+(-2.4%/yr).
 
 This module replaces the two hand-set epochs with a single monotone cascade
 improvement schedule from DOTS introduction (1997) to the present (2024), driven
@@ -29,9 +29,9 @@ the pre-GeneXpert -> GeneXpert sensitivities over params.length_gene_xpert_ramp
 and hands each sub-epoch its own start/end sensitivities, so splitting the era
 into sub-epochs does not restart the ramp.
 
-USAGE (in the simulation notebook, cell 14 `build_camp`)
--------------------------------------------------------
-Replace the Epoch-2 and Epoch-3 DiagnosticTreatNeg / RampDTN blocks with:
+USAGE (in the simulation notebooks, `build_camp`)
+-------------------------------------------------
+The diagnostic blocks from DOTS introduction onward are built as:
 
     for blk in cascade_schedule(params, tf_gain_per_year, cs_gain_per_year,
                                 dx_boost=dx_boost, tx_boost=tx_boost,

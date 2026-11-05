@@ -1,7 +1,6 @@
-"""Combined wave-1 + wave-2 fit for the SECOND trend calibration (round 2).
+"""Combined wave-1 + wave-2 fit (Appendix Tables S-1 to S-6).
 
-Round 2 adds infectivity_decline_per_year and drops the inert TB Duration
-column.  Wave 2 was weighted 70/30 toward the loose-cascade stratum, so this
+Wave 2 was weighted 70/30 toward the loose-cascade stratum, so this
 script also reports the two strata separately: the question is whether a 2024
 cascade loose enough to leave headroom for the diagnostic and treatment
 scenarios is compatible with the WHO trajectory.

@@ -1,16 +1,10 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Figure 2A (panels A1-A3): calibrated incidence, prevalence and mortality.
 
-Figure 2 for the manuscript — production run, 2026-09-25.
-
-This is the figure that answers the reviewer comment about the baseline trend.
-It plots the calibrated model against the full WHO incidence series instead of a
+Plots the calibrated model against the full WHO incidence series instead of a
 single 2020 anchor, using the Baseline (Scenario_Code 0) replicates of the
-production run (experiment d892bdf7), which runs the round-2 best fit
-(wave-2 design 4).
-
-Unlike Figure 2 of the original submission — which showed the model before
-re-calibration — the model line here is fitted to the four WHO incidence
-years, so the diamonds are targets it was actually fitted to.
+production run (experiment d892bdf7-18bd-f111-92f1-000d3af5294c), which runs
+the calibrated point (wave-2 design 4).  The model is fitted to the four WHO
+incidence years, so the diamonds are targets it was actually fitted to.
 
 Writes figures/reproduced/Figure2A_calibration.png
 """
@@ -30,7 +24,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 mpl.rcParams["font.family"] = "DejaVu Sans"
 mpl.rcParams["axes.unicode_minus"] = False
-# 2026-10-01: these figures are drawn wide and printed at column width, so the
+# these figures are drawn wide and printed at column width, so the
 # defaults that matplotlib applies to anything without an explicit fontsize
 # (tick labels above all) have to be raised along with the explicit sizes.
 mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15,
@@ -134,8 +128,8 @@ def main():
     axes[2].legend(fontsize=12.8, frameon=False, loc="upper center",
                    bbox_to_anchor=(0.5, -0.22), ncol=1)
 
-    # all three panels start at zero: a truncated axis exaggerates the decline
-    # (reviewer comment).  The top is left where autoscaling put it, so the
+    # all three panels start at zero: a truncated axis exaggerates the decline.
+    # The top is left where autoscaling put it, so the
     # survey markers and their error bars stay inside the axes.
     for ax in axes[1:]:
         ax.set_ylim(bottom=0)

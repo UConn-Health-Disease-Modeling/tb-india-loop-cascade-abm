@@ -1,4 +1,4 @@
-Wave-2 design (round 2), weighted toward a loose cascade
+Wave-2 design, weighted toward a loose cascade
 wave-1 experiment: af707f22-16bc-f111-92f1-000d3af5294c
 design points: 200, viable: 78
 

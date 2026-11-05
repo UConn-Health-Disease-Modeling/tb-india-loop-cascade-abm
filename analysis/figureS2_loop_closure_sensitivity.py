@@ -1,7 +1,6 @@
 """Sensitivity of intervention impact to further cascade-loop closure.
 
-Previously Panel C of Figure 4; separated out because Figure 4 now carries the
-three End-TB burden measures.  Experiment 941e6423 removes a further fraction
+Experiment 941e6423 removes a further fraction
 of the residual loss at each of the three loop drivers from 2025, on top of
 each scenario (24 design points x 100 replicates); the zero point is the
 production run.

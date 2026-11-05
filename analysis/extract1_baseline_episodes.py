@@ -1,33 +1,25 @@
-"""[2026-10-05 cohort revision]  The trajectory cohort is every active TB episode
-ACTIVATING in calendar years 2015-2024 (2015.0 <= act_year < 2025.0) that resolves
-within the simulation, and the loop group is assigned PER EPISODE from that
-episode's own TBTestNegative / TBTestDefault / TBFailedDrugRegimen counts, as the
-Methods and Table 2 define it.  The published 1850-2050 pool was 52.5% pre-1997
-and 20.6% projected-future episodes, and the group had been assigned from each
-individual's whole event history (97% agreement with the per-episode rule).
-Panel A rates are per-episode column sums (treatment starts = first initiation
-per episode), not recorder-wide event totals, which counted every event in the
-run regardless of window.  The full per-episode table (all years, with act_year)
-is dumped to analysis/derived/baseline_episodes.csv.gz for figure3_loop_group_burden.py.
+"""Episode-level extraction for the Baseline scenario of the production run.
+
+Reads experiment d892bdf7-18bd-f111-92f1-000d3af5294c (calibrated parameters,
+interventions from 2025).  The full per-episode table (all years, with act_year)
+is written to analysis/derived/baseline_episodes.csv.gz, which
+figure2b_table2_cascade_benchmarks.py and figure3_loop_group_burden.py read.
+
+The cohort is every active TB episode ACTIVATING in calendar years 2015-2024
+(2015.0 <= act_year < 2025.0) that resolves within the simulation, and the loop
+group is assigned PER EPISODE from that episode's own TBTestNegative /
+TBTestDefault / TBFailedDrugRegimen counts, as the Methods and Table 2 define it.
+Figure 1A reports percentages and rates on one denominator, active TB episodes,
+rather than raw event counts over the whole 1850-2050 simulation, which would mix
+a latent-infection stock with active-TB flows.  Panel A rates are per-episode
+column sums (treatment starts = first initiation per episode), not
+recorder-wide event totals, which would count every event in the run regardless
+of window.  Figure 1B shows the patient trajectories, including the test-loop-only
+trajectory, with model medians and annotated transition times.
+
 One replicate (rep 40) fades out before 1960 and contributes no cohort episodes;
 it is dropped from the per-replicate rate means (97 reps) but kept in the
 population-year denominator of Figure 3D, as in every other figure.
-
-[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
-
-[2026-09-25 production re-run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, trend-calibrated parameters,
-interventions from 2025]
-
-Rebuild Figure 1A/1B for the 2026-09 revision (Sourya comments #59, #60).
-
-#59  Fig 1A showed raw per-replicate event/person counts accumulated over the
-     WHOLE 1850-2050 simulation in a 5%-sampled, 20x-scaled synthetic
-     population -- uninterpretable, and it mixed a latent-infection stock with
-     active-TB flows.  Rebuilt as percentages / rates on one denominator:
-     active TB episodes (same definition as Table 2).
-#60  Fig 1B was a hardcoded schematic with illustrative durations.  Rebuilt
-     with the third (Test-loop only) trajectory and real model medians, with
-     transition times annotated.
 
 Episode definition (the one Table 2 uses): a
 TBActivation followed by a resolution (SymptomaticCleared | DiseaseDeaths)

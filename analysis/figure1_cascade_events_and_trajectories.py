@@ -1,11 +1,7 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Draw Figure 1A and Figure 1B.
 
-[2026-09-25 production re-run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, trend-calibrated parameters,
-interventions from 2025]
-
-Draw Figure 1A and Figure 1B for the 2026-09 revision.
-
-Reads analysis/derived/figure1_values.json (produced by extract1_baseline_episodes.py) and
+Reads analysis/derived/figure1_values.json (produced by extract1_baseline_episodes.py
+from the production run, experiment d892bdf7) and
 writes figures/reproduced/Figure1A_cascade_events_and_composition.png and
 figures/reproduced/Figure1B_patient_trajectories.png
 """
@@ -19,7 +15,7 @@ from matplotlib.patches import Patch
 
 mpl.rcParams["font.family"] = "DejaVu Sans"
 mpl.rcParams["axes.unicode_minus"] = False
-# 2026-10-01: these figures are drawn wide and printed at column width, so the
+# these figures are drawn wide and printed at column width, so the
 # defaults that matplotlib applies to anything without an explicit fontsize
 # (tick labels above all) have to be raised along with the explicit sizes.
 mpl.rcParams.update({"font.size": 16, "axes.titlesize": 19.5, "axes.labelsize": 17.5,
@@ -40,7 +36,7 @@ GLAB = {"NoLooponly": "No loop",
         "TxFailonly": "Treatment\nfailure\nonly",
         "TestTxfail": "Diagnostic loop\n+ treatment\nfailure"}
 
-# 2026-10-05: raised to match Figures 3-5 at column width
+# raised to match Figures 3-5 at column width
 FS_T, FS_L, FS_A = 19.5, 17.5, 16
 
 

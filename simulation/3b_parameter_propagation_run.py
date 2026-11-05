@@ -65,35 +65,35 @@ def run_parameter_propagation():
 
     # ── Build sweep ───────────────────────────────────────────────
     subsample = {
-        # ── Production point: round-2 combined fit, wave2 design 4 (experiment 496ded25) ──
+        # ── Production point: combined wave-1 + wave-2 fit, wave-2 design 4 (experiment 496ded25) ──
         # max I = 0.27 on the six burden targets; 2024 treatment fraction 0.746,
         # care-seeking x1.56, infectivity x0.71 -- a LOOSE present-day cascade,
         # which is what leaves headroom for the Dx and Tx scenarios.
         # Keeps every key the calibration sweeps also saw; only the ten design
         # columns are replaced.
         'ART Factor': 1.0,
-        'Base_Infectivity_Constant': 0.0419561921123124,   # round-2 calibration (wave2 design 4)
-        'Care Seeking Fast Duration Days': 14.170451537838758,   # round-2 calibration (wave2 design 4)
-        'Care Seeking Slow Duration Days': 157.77075650568554,   # round-2 calibration (wave2 design 4)
+        'Base_Infectivity_Constant': 0.0419561921123124,   # calibrated (wave-2 design 4)
+        'Care Seeking Fast Duration Days': 14.170451537838758,   # calibrated (wave-2 design 4)
+        'Care Seeking Slow Duration Days': 157.77075650568554,   # calibrated (wave-2 design 4)
         'CD4_aq_200_300_rel': 20.434,
         'CD4_aq_300_400_rel': 3.0,
         'CD4_aq_400_500_rel': 2.0,
         'CD4_aq_above_500': 1.0,
         'CD4_aq_below_200_rel': 54.55,
-        'cs_gain_per_year': 0.0164967327813104,   # round-2 calibration (wave2 design 4)
+        'cs_gain_per_year': 0.0164967327813104,   # calibrated (wave-2 design 4)
         'Death Fraction': 0.55,   # fixed; present throughout calibration, so it must stay here too
-        'infectivity_decline_per_year': 0.0128311263239953,   # NEW in round 2: secular non-cascade decline (NodeInfectivityMult), 2024 multiplier x0.71
-        'Post_Infection_Acquisition_Multiplier': 0.3197498251614573,   # round-2 calibration (wave2 design 4)
+        'infectivity_decline_per_year': 0.0128311263239953,   # secular non-cascade decline (NodeInfectivityMult), 2024 multiplier x0.71
+        'Post_Infection_Acquisition_Multiplier': 0.3197498251614573,   # calibrated (wave-2 design 4)
         'Primary HIV multiplier': 1.0,
         'Relative TB CD4 Infectiousness': 0.1,
         'sens_smear_pos_GXL': 0.65,
         'TB Duration': 3.5,   # FIXED, not calibrated: applied only together with 'Death Fraction', which no calibration design carries, so the swept range never reached the model
-        'TB Presymptomatic Duration Years': 0.2330436272992007,   # round-2 calibration (wave2 design 4)
+        'TB Presymptomatic Duration Years': 0.2330436272992007,   # calibrated (wave-2 design 4)
         'TB_Active_Presymptomatic_Infectivity_Multiplier': 0.166,
-        'TB_Fast_Progressor_Fraction_Adult': 0.0764744993503116,   # round-2 calibration (wave2 design 4)
-        'TB_Slow_Progressor_Rate': 8.265850430929792e-06,   # round-2 calibration (wave2 design 4)
+        'TB_Fast_Progressor_Fraction_Adult': 0.0764744993503116,   # calibrated (wave-2 design 4)
+        'TB_Slow_Progressor_Rate': 8.265850430929792e-06,   # calibrated (wave-2 design 4)
         'TBHIV Duration': 1.5,
-        'tf_gain_per_year': 0.0017202096282671,   # round-2 calibration (wave2 design 4)
+        'tf_gain_per_year': 0.0017202096282671,   # calibrated (wave-2 design 4)
         'treatment_fraction_LQ': 0.55,
     }
     # ====================================================================
@@ -188,10 +188,10 @@ def run_parameter_propagation():
         'PropertyReportTB.json',
         'config.json'
     ])
-    # v8: cache step wrapped — non-critical, fails on non-numeric tags
+    # the cache step is non-critical; it fails on non-numeric tags
     try:
         EMODTask.cache_experiment_metadata_in_sql(experiment.uid)
     except Exception as e:
-        print(f'[v8] cache_experiment_metadata_in_sql skipped: {e}')
+        print(f'cache_experiment_metadata_in_sql skipped: {e}')
 
     return experiment.uid

@@ -1,13 +1,13 @@
-"""Wave-2 design for the second trend calibration, weighted toward a loose cascade.
+"""Wave-2 design, weighted toward a loose present-day cascade.
 
-Wave 1 of this round (experiment af707f22) showed that adding
+Wave 1 (experiment af707f22) showed that adding
 `infectivity_decline_per_year` makes a loose present-day cascade *possible*:
 one design point (164) reached max I = 1.53 with a 2024 treatment-initiation
 fraction of 0.75 and only a 1.17x care-seeking improvement, against zero such
-points in the first round.  But it is still not where the NROY concentrates --
+points in an earlier calibration without that parameter.  But it is still not where the NROY concentrates --
 the median passing point sits at a 2024 treatment fraction of 0.86.
 
-A uniform wave-2 design would therefore land where round 1 already landed and
+A uniform wave-2 design would therefore land where that earlier calibration landed and
 reproduce its conclusion.  This design instead allocates most of its points to
 the region that matters for the manuscript's question:
 
@@ -17,7 +17,7 @@ the region that matters for the manuscript's question:
 remainder of the NROY, so the two strata can be compared rather than one being
 assumed.
 
-Pipeline is otherwise the same as the first trend calibration's wave 2: a random-forest
+Pipeline: a random-forest
 viability gate, then log-scale GP emulators, then implausibility in log space.
 
 Run with the notebook environment (needs sklearn/scipy):
@@ -82,7 +82,7 @@ def main():
         on="design_id").dropna(subset=BURDEN)
     X = to_unit(d)
     viable = d["incidence_2020"].between(VIABLE_LO, VIABLE_HI).to_numpy()
-    rep = [f"Wave-2 design (round 2), weighted toward a loose cascade",
+    rep = [f"Wave-2 design, weighted toward a loose cascade",
            f"wave-1 experiment: {WAVE1}",
            f"design points: {len(d)}, viable: {int(viable.sum())}", ""]
     print("\n".join(rep))

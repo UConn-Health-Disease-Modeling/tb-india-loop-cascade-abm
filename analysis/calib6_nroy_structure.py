@@ -1,4 +1,4 @@
-"""Structure of the NROY region from the round-2 trend calibration.
+"""Structure of the NROY region (Appendix S-3.8).
 
 Table S-7 reports that eight of ten parameters keep ~90% of their prior range
 inside the NROY region.  This script asks what shape that region has: which

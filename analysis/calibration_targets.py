@@ -1,9 +1,9 @@
-"""Calibration targets for the 2026-09 trend re-calibration.
+"""Calibration targets.
 
-Change from the published set: the three cross-sectional 2020 burden targets are
+Change from the earlier single-year calibration: the three cross-sectional 2020 burden targets are
 replaced by a four-point WHO incidence TRAJECTORY plus the 2020 prevalence and
 mortality anchors, so the calibration constrains the direction of the epidemic,
-not only its level (Sourya comment #64).
+not only its level.
 
 Incidence series: WHO Global TB Programme estimates for India, retrieved from
 the World Bank mirror of the WHO series (indicator SH.TBS.INCD), per 100,000/yr:
@@ -12,16 +12,16 @@ the World Bank mirror of the WHO series (indicator SH.TBS.INCD), per 100,000/yr:
 
 Four points (2000, 2010, 2015, 2020) are used as targets; 2005 and 2023 are held
 out so the fit can be checked against unused years.  sigma is set at 17% of the
-point estimate, matching the ratio already used for the published 2020 target
+point estimate, matching the ratio used for the earlier 2020 target
 (32 / 188) and consistent with the width of WHO's own uncertainty intervals for
 India.
 
-NOTE ON VINTAGE: the published manuscript used incidence_2020 = 188 (WHO Global
+NOTE ON VINTAGE: the earlier calibration used incidence_2020 = 188 (WHO Global
 TB Report 2021 vintage); the current WHO series puts 2020 at 197.  The whole
 trajectory here comes from one vintage so the trend is internally consistent;
 the difference is well inside one sigma.
 
-Split (unchanged in spirit from the 8-parameter decision):
+Split:
   CALIBRATION (emulator-gated) = the 6 burden targets below
   VALIDATION  (best-fit 3-sigma check only) = the 7 cascade targets
 """
@@ -74,4 +74,4 @@ if __name__ == "__main__":
         print(f"  {k:26s} {z:>6} +/- {s}")
     print("\nWHO implied trend 2000-2020: %+.2f%%/yr"
           % DERIVED["incidence_annual_change_2000_2020"])
-    print("published model trend 2000-2020: +0.05%/yr  (this is what the re-run fixes)")
+    print("earlier model without secular improvement, 2000-2020: +0.05%/yr")

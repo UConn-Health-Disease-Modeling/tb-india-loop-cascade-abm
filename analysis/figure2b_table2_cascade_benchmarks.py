@@ -1,19 +1,18 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Figure 2B (cascade benchmarks, 2015-2024 cohort) and all Table 2 values.
 
-Figure 2B (cascade benchmarks, 2015-2024 cohort) and all Table-2 values from the 2026-09 production run.
-
-One pass over the 100 baseline replicates of experiment 3cd8bdf6 produces both:
+One pass over the Baseline replicates of the production run (experiment
+d892bdf7-18bd-f111-92f1-000d3af5294c) produces both:
 
   figures/reproduced/Figure2B_cascade_benchmarks.png
   analysis/derived/table2_values.json
 
-Panels mirror the published Figure 2B: the distribution of diagnostic tests per
+Panels: the distribution of diagnostic tests per
 episode, mean tests per episode by loop group against the Subbaraman targets,
 and the loop-group composition against the same targets.
 
 Table-2 quantities, as defined in the manuscript: loop-group fractions
 (mean + IQR across replicates), the three delay phases, and the excess-resource
-metrics (renamed from "wasted" per reviewer comment #62).
+metrics.
 """
 from __future__ import annotations
 import io, json, sqlite3, sys
@@ -31,7 +30,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 mpl.rcParams["font.family"] = "DejaVu Sans"
 mpl.rcParams["axes.unicode_minus"] = False
-# 2026-10-01: these figures are drawn wide and printed at column width, so the
+# these figures are drawn wide and printed at column width, so the
 # defaults that matplotlib applies to anything without an explicit fontsize
 # (tick labels above all) have to be raised along with the explicit sizes.
 mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15,
@@ -79,7 +78,7 @@ def q(s, p):
 
 
 def main():
-    # 2026-10-05: benchmarks are evaluated on the same cohort as every other
+    # benchmarks are evaluated on the same cohort as every other
     # trajectory result - episodes activating in 2015-2024, loop group per
     # episode - with treatment-failure-only episodes merged into the
     # any-treatment-failure stratum for the three displayed groups (the
@@ -113,7 +112,7 @@ def main():
     # the published benchmark counts tests per confirmed case, so episodes
     # that never reached a test are outside its denominator; including them
     # put the no-loop group below one test per case, which the benchmark
-    # cannot mean (reviewer comment)
+    # cannot mean
     means = [d.loc[(d.group == g) & (d.n_tests > 0), "n_tests"].mean() for g in SHOW]
     ax.bar(range(len(SHOW)), means, color=[COLS[g] for g in SHOW], edgecolor="#2171B5")
     for i, (g, m) in enumerate(zip(SHOW, means)):

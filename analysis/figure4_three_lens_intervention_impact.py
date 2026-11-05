@@ -1,22 +1,15 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Figure 4: three-lens intervention impact by care-cascade loop group.
 
-[2026-09-25 production re-run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, trend-calibrated parameters,
-interventions from 2025]
+Reads scenario_episodes.csv.gz (extract2_scenario_episodes.py, production run,
+experiment d892bdf7-18bd-f111-92f1-000d3af5294c).
 
-Rebuild Figure 5 (triple-lens intervention impact) for the 2026-09 revision.
-
-Addresses Sourya comments:
-  #67  the published Panel A was non-monotone (Tx +9% but ACF+Tx -6% for the
-       NoLoop group).  Those numbers came from the assumption-based episode
-       reconstruction (fixed 240 d pre-care + 60 d per repeat test + 180 d per
-       treatment failure).  Recomputed from the model's own event timestamps,
-       every combination is at least as good as its components within every
-       group, except the small treatment-failure-only group, whose burden rises
-       purely because interventions move patients INTO it (composition effect,
-       annotated in the figure).
-  #62  "wasted" -> "excess" throughout the resource lens.
-  #66  each cell carries a paired-replicate 95% CI (same seeds across
-       scenarios), reported in the caption.
+Episode durations come from the model's own event timestamps, not from an
+assumption-based reconstruction with fixed times per test or treatment
+failure.  Within the small treatment-failure-only group, burden can rise under
+an intervention purely because interventions move patients INTO that group
+(a composition effect).  The resource lens reports excess resource use.  Each
+cell carries a paired-replicate 95% CI (same seeds across scenarios), reported
+in the caption.
 
 Uses episodes activating from 2025 (when the interventions switch on in the
 simulations) so that pre-intervention episodes do not dilute the contrast.
@@ -36,7 +29,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 mpl.rcParams["font.family"] = "DejaVu Sans"
 mpl.rcParams["axes.unicode_minus"] = False
-# 2026-10-01: these figures are drawn wide and printed at column width, so the
+# these figures are drawn wide and printed at column width, so the
 # defaults that matplotlib applies to anything without an explicit fontsize
 # (tick labels above all) have to be raised along with the explicit sizes.
 mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15,

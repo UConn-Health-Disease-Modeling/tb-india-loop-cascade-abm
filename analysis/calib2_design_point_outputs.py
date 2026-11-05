@@ -1,8 +1,8 @@
-"""Compute the trend-calibration targets per design point (2026-09 re-run).
+"""Compute the calibration targets for every design point of one calibration experiment.
 
 Same pipeline as analysis/calib2_target_readers.py, with one change: incidence is
 extracted at 2000, 2010, 2015 and 2020 instead of 2020 only, so the calibration
-is gated on the shape of the epidemic as well as its level (Sourya comment #64).
+is gated on the shape of the epidemic as well as its level.
 2005 and 2023 are extracted too but held out of the implausibility calculation
 as a check on unused years.
 

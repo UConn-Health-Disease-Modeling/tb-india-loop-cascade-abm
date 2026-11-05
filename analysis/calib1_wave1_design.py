@@ -1,14 +1,14 @@
-"""Wave-1 LHS design for the second trend calibration (2026-09-29).
+"""Wave-1 Latin-hypercube design over the 10 free parameters.
 
-Two changes from the design of the first trend calibration:
+Two choices here differ from an earlier calibration of the same model:
 
 1. `infectivity_decline_per_year` is added.  It drives a NodeInfectivityMult
    campaign event that reduces node infectivity geometrically from 1997 to 2024
    and then holds flat.  Without it the cascade is the only mechanism the model
    has to reproduce the WHO decline, which forced a 2024 treatment-initiation
    fraction of 0.80 and a 2.5x improvement in care-seeking -- leaving no headroom
-   for the diagnostic and treatment scenarios to act on.  Checked against the
-   first calibration: no design point with a 2024 treatment fraction below 0.78
+   for the diagnostic and treatment scenarios to act on.  Checked against that
+   earlier calibration: no design point with a 2024 treatment fraction below 0.78
    AND a care-seeking improvement below 1.6x came within 3 sigma of the burden
    targets (best max I = 3.44).  Zero is inside the prior, so the
    "cascade explains the whole decline" solution remains reachable.

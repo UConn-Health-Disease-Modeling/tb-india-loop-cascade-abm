@@ -1,20 +1,15 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Episode-level extraction for all 8 scenarios of the production run.
 
-[2026-09-25 production re-run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, trend-calibrated parameters,
-interventions from 2025]
-
-Process ALL 8 production scenarios at episode level for the 2026-09 revision.
-
-Feeds the rebuilt Figure 3 (comment #65: density curves instead of overlapping
-histograms), Figure 5 (comment #67: why ACF+Tx can look worse than Tx inside a
-loop group) and replicate-based uncertainty (comment #66).
+Reads experiment d892bdf7-18bd-f111-92f1-000d3af5294c.  Feeds Figure 4
+(three-lens intervention impact by loop group), including its
+paired-replicate uncertainty intervals.
 
 Scenario_Code -> (ACF, Dx, Tx):
   0 Baseline | 1 Tx | 2 Dx | 3 Dx+Tx | 4 ACF | 5 ACF+Tx | 6 ACF+Dx | 7 ACF+Dx+Tx
 
 Output: analysis/derived/scenario_episodes.csv.gz  (one row per scenario x replicate
 x loop group x activation window) and analysis/derived/scenario_infectious_time.csv.gz (per
-episode infectious time, baseline scenario only, for the density panel).
+episode infectious time, Baseline scenario only).
 """
 from __future__ import annotations
 import io, sqlite3, sys

@@ -1,12 +1,8 @@
-"""[2026-09-30 round-2 production run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, loose-cascade calibration with the secular infectivity decline]
+"""Extract per-replicate annual TB burden trajectories for all 8 scenarios.
 
-[2026-09-25 production re-run — experiment d892bdf7-18bd-f111-92f1-000d3af5294c, trend-calibrated parameters,
-interventions from 2025]
-
-Extract per-replicate annual TB burden trajectories for all 8 scenarios.
-
-Feeds Figure 4 with replicate-based uncertainty intervals (Sourya comment #66)
-and quantifies the baseline trend question (comment #64).
+Reads the production run, experiment d892bdf7-18bd-f111-92f1-000d3af5294c.
+Appendix Figure S-2 takes its zero point and its 2015 and 2035 Baseline
+references from this table.
 
 Writes analysis/derived/burden_by_replicate.csv.gz with one row per
 scenario x replicate x year: incidence per 100k, active symptomatic prevalence

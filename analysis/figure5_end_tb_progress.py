@@ -1,20 +1,17 @@
 """Figure 5: progress against the End-TB targets on all three burden measures.
 
-[2026-10-05 parameter uncertainty]  Lines and bars are the production run
-(calibrated best fit, 98 replicates) as before.  The BANDS now carry
-parameter uncertainty: experiment f8dfe706 propagated 20 parameter sets drawn
-from the retained (NROY) region through all 8 scenarios at 10 replicates each
-(analysis/derived/burden_by_parameter_set.csv.gz, from extract5_parameter_propagation.py).  For each
-set the 10-replicate mean is formed first; the band is the 2.5th-97.5th
-percentile of those set means across the 20 sets.  Panels A-C keep the
-REPLICATE bands (reverted 2026-10-05 after a first version drew parameter
-bands there): the across-set spread of absolute level is the 3-sigma
-calibration tolerance, common to every arm and widened further by the
-stratified draw that covers the secular-trend extremes, so it says nothing
-about the contrasts the figure is about.  In panel D the bar keeps the
-replicate bootstrap CI as the inner, thick error bar and adds the across-set
-range as an outer, thin whisker; every set's reduction is measured against
-that set's own 2015 baseline.  analysis/derived/figure5_parameter_uncertainty.csv lists the
+Lines and bars are the production run (calibrated best fit, 98 replicates).
+Parameter uncertainty comes from experiment f8dfe706, which propagated 20
+parameter sets drawn from the retained (NROY) region through all 8 scenarios
+at 10 replicates each (analysis/derived/burden_by_parameter_set.csv.gz, from
+extract5_parameter_propagation.py).  For each set the 10-replicate mean is
+formed first.  In panel D the bar carries the replicate bootstrap CI as the
+inner, thick error bar and the 2.5th-97.5th percentile across the 20 sets as
+an outer, thin whisker; every set's reduction is measured against that set's
+own 2015 baseline.  Panels A-C show REPLICATE bands only: the across-set
+spread of absolute level is the 3-sigma calibration tolerance, common to every
+arm and widened further by the stratified draw that covers the secular-trend
+extremes, so it says nothing about the contrasts the figure is about.  analysis/derived/figure5_parameter_uncertainty.csv lists the
 numbers (production value, replicate CI, set median and range) for the
 appendix table.
 

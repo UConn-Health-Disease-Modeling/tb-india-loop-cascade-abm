@@ -65,9 +65,7 @@ specificity_resistance_clinical = 1.00
 CRP_Sensitivity = 0.91
 CRP_Specificity = 0.59
 
-intervention_day = dots_start + 28 * 365     # Interventions start 2025 (2026-09 re-run;
-                                            # was +22 y = 2019, which contradicted the
-                                            # manuscript's stated 2025 scenario start)
+intervention_day = dots_start + 28 * 365     # Interventions start in 2025
 dots_plus_15 = dots_start + 15.0 * 365.0
 
 # Dynamic = False will set at Guess value
@@ -246,14 +244,14 @@ parameters = [
         'Max': 0.85,
         'Wave2_Source': 'Cazabon 2017 (Low QoC India); Steingart 2014 Xpert',
     },
-    # ── 2026-09 trend re-calibration: secular cascade improvement ───────────
-    # The published baseline stepped the treatment-initiation fraction DOWN from
+    # ── Secular cascade improvement ─────────────────────────────────────────
+    # An earlier baseline stepped the treatment-initiation fraction DOWN from
     # 0.70 (DOTS era) to 0.55 at GeneXpert introduction, which flattened and then
     # reversed the simulated incidence trend.  These two parameters replace that
     # hand-set step with a monotone improvement from 1997 to 2024 and are what
     # allows the model to reproduce the WHO incidence decline (322 -> 197 per
     # 100,000 over 2000-2020).  Zero is inside both priors, so the calibration
-    # can still reject the mechanism.  Applied via helpers/campaign_schedules.py.
+    # can still reject the mechanism.  Applied via analysis/campaign_schedules.py.
     {
         'Name': 'tf_gain_per_year',
         'Dynamic': True,
@@ -276,7 +274,7 @@ parameters = [
         'Name': 'infectivity_decline_per_year',
         'Dynamic': True,
         # NOT EMOD config — applied via build_camp as a NodeInfectivityMult
-        # campaign event (see helpers/campaign_schedules.infectivity_multiplier_map).
+        # campaign event (see analysis/campaign_schedules.infectivity_multiplier_map).
         # Stands for the part of India's historical decline that the care cascade
         # does not produce: living conditions, nutrition, housing density,
         # demographic change.  Zero is inside the prior, so "the cascade explains

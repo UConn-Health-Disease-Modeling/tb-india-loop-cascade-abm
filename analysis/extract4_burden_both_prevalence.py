@@ -1,11 +1,11 @@
-"""Re-extract burden trajectories carrying BOTH prevalence channels.
+"""Extract burden trajectories carrying BOTH prevalence channels, all 8 scenarios.
 
 Figure 2 calibrates to the national prevalence survey using Active TB
 Prevalence, which includes the presymptomatic phase that a survey's
-X-ray-plus-sputum screen also detects.  Figure 5 previously projected the
-narrower Active Symptomatic Prevalence, so the figure the paper calibrated and
-the figure it reported were different quantities.  This writes both, leaving
-the original extract untouched for the scripts that still read it.
+X-ray-plus-sputum screen also detects.  Figure 5 reports the same channel, so
+the quantity the model was fitted to and the quantity it reports agree.  The
+narrower Active Symptomatic Prevalence is written too.
+extract3_burden_by_replicate.py, which Appendix Figure S-2 reads, is separate.
 """
 from __future__ import annotations
 import io, json, sqlite3, sys
