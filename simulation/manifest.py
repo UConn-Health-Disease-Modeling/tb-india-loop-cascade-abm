@@ -12,7 +12,6 @@ assets_input_dir= "Assets"
 plugins_folder = "download/reporter_plugins"
 
 my_ep4_assets = None  # or ['dtk_post_process.py']
-ep4="EP4"
 ep4_path = "python_scripts"   # path to pre/post_process
 requirements = "./requirements.txt"
 sif="dtk_centos.id"
@@ -21,10 +20,3 @@ sif="dtk_centos.id"
 long_term_migration_rates_path="ltm.csv"
 india_mortality_data="data/India_mortality_1990_to_2017.csv"
 small_pop_file="twonodes.csv"
-
-
-# ep4="EP4"
-# R_script_dir="EP4/R"
-# requirements = "./requirements.txt"
-# sif="sif.id"
-# small_pop_file="twonodes.csv"
