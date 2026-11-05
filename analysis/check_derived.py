@@ -7,7 +7,7 @@ the extraction scripts, run from the top folder of the repository:
 
 Every file in analysis/derived/ is compared with its committed version (git HEAD).
 A file that was not re-written is reported as "not re-run".  Tables are compared
-by content, ignoring row order, with numbers agreeing to a relative tolerance of
+by content, ignoring row order and line endings, with numbers agreeing to a relative tolerance of
 1e-9; text reports must match exactly.  The calibration outputs that
 calib2_design_point_outputs.py writes into each downloaded experiment are compared
 with calibration/wave1/ and calibration/wave2/ in the same way.
@@ -79,7 +79,13 @@ def compare_json(a, b, path="") -> str:
     return "" if a == b else f"value differs at {path}: {a!r} vs {b!r}"
 
 
+def normalise(raw: bytes, name: str) -> bytes:
+    """Undo Windows line endings, which git may add to text files on checkout."""
+    return raw if name.endswith(".gz") else raw.replace(b"\r\n", b"\n")
+
+
 def compare(new: bytes, old: bytes, name: str) -> str:
+    new, old = normalise(new, name), normalise(old, name)
     if new == old:
         return ""
     if name.endswith((".csv", ".csv.gz")):
@@ -105,7 +111,7 @@ def main() -> int:
             status = "not re-run"
         else:
             new = path.read_bytes()
-            if new == old and path == ROOT / ref:
+            if normalise(new, ref) == normalise(old, ref) and path == ROOT / ref:
                 status = "not re-run"
             else:
                 msg = compare(new, old, ref)
