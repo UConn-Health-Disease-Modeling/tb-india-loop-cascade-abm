@@ -21,7 +21,8 @@ interventions at different stages of the cascade would change.
 Raw simulation outputs (8–45 GB per experiment) are not distributed. Everything in `analysis/derived/` was
 extracted from them, and every figure and table can be rebuilt from those files in a few minutes without EMOD.
 With a COMPS account, `python simulation/download_outputs.py` downloads the raw outputs the extraction scripts
-read and puts each experiment where they look for it.
+read and puts each experiment where they look for it; after re-running the extraction scripts,
+`python analysis/check_derived.py` confirms that the re-extracted tables match the committed ones.
 
 ## How the pieces fit together
 

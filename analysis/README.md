@@ -35,6 +35,8 @@ from inside this folder. The top-level `README.md` maps each manuscript item to 
 | `extract5_parameter_propagation.py` | Parameter propagation | `burden_by_parameter_set.csv.gz` |
 | `extract6_loop_closure_sweep.py` | Loop-closure sweep | `loop_closure_sweep_incidence.csv.gz` |
 
+`check_derived.py` compares re-extracted tables with the committed versions (git HEAD), ignoring row order.
+
 **Figures and tables** (read `derived/` only, run in minutes)
 
 | Script | Manuscript item |
