@@ -14,4 +14,5 @@ idmtools.log
 COMPS_log.log
 COMPS_ID
 my_config.json
-figures/Figure_TxCure/
+figures/reproduced/
+analysis/*_cache.csv.gz

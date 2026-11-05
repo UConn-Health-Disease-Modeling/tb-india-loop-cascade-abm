@@ -4,7 +4,7 @@
 (calibrated best fit, 98 replicates) as before.  The BANDS now carry
 parameter uncertainty: experiment f8dfe706 propagated 20 parameter sets drawn
 from the retained (NROY) region through all 8 scenarios at 10 replicates each
-(analysis/derived/burden_propagation.csv.gz, from extract_propagation.py).  For each
+(analysis/derived/burden_by_parameter_set.csv.gz, from extract5_parameter_propagation.py).  For each
 set the 10-replicate mean is formed first; the band is the 2.5th-97.5th
 percentile of those set means across the 20 sets.  Panels A-C keep the
 REPLICATE bands (reverted 2026-10-05 after a first version drew parameter
@@ -14,7 +14,7 @@ stratified draw that covers the secular-trend extremes, so it says nothing
 about the contrasts the figure is about.  In panel D the bar keeps the
 replicate bootstrap CI as the inner, thick error bar and adds the across-set
 range as an outer, thin whisker; every set's reduction is measured against
-that set's own 2015 baseline.  analysis/derived/fig5_propagation_table.csv lists the
+that set's own 2015 baseline.  analysis/derived/figure5_parameter_uncertainty.csv lists the
 numbers (production value, replicate CI, set median and range) for the
 appendix table.
 
@@ -39,7 +39,7 @@ and so detects the presymptomatic phase too.  Reporting the narrower
 symptomatic channel here would score the interventions on a different
 quantity from the one the model was fitted to.
 
-Writes figures/Figure_TxCure/Fig5_endtb_panels.png
+Writes figures/reproduced/Figure5_end_tb_progress.png
 """
 from __future__ import annotations
 import io, sys
@@ -60,7 +60,7 @@ mpl.rcParams.update({"font.size": 18, "axes.titlesize": 22, "axes.labelsize": 20
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-OUT = HERE.parent / "figures" / "Figure_TxCure"
+OUT = HERE.parent / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
 
 ORDER = ["Baseline", "ACF", "Dx", "Tx", "ACF+Dx", "ACF+Tx", "Dx+Tx", "ACF+Dx+Tx"]
@@ -77,7 +77,7 @@ MEASURE = [("inc100k", "Incidence", "#2171B5"),
 TARGET = {"inc100k": 90.0, "mort100k": 95.0}        # End-TB 2035, vs 2015
 RNG = np.random.default_rng(20261004)
 NBOOT = 2000
-PROP = DATA / "burden_propagation.csv.gz"
+PROP = DATA / "burden_by_parameter_set.csv.gz"
 BAND_ARMS = ()     # parameter bands in A-C are off; D carries the across-set range
 Q_LO, Q_HI = 2.5, 97.5
 
@@ -113,7 +113,7 @@ def boot_ci(num, den, nboot=NBOOT):
 
 
 def main():
-    d = pd.read_csv(DATA / "burden_by_rep_incl.csv.gz")
+    d = pd.read_csv(DATA / "burden_by_replicate_both_prevalence.csv.gz")
     d = d[(d.yr >= 2000) & (d.yr <= 2035)]
     alive = d.groupby("rep").inc100k.max()
     dead = sorted(alive.index[alive == 0])
@@ -228,7 +228,7 @@ def main():
                columnspacing=1.8, handlelength=1.8, labelspacing=0.55)
 
 
-    p = OUT / "Fig5_endtb_panels.png"
+    p = OUT / "Figure5_end_tb_progress.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)
@@ -257,8 +257,8 @@ def main():
                     f"[{np.percentile(r, Q_LO):3.0f}-{np.percentile(r, Q_HI):3.0f}]")
         print(row)
     tab = pd.DataFrame(recs)
-    tab.to_csv(DATA / "fig5_propagation_table.csv", index=False)
-    print("wrote analysis/derived/fig5_propagation_table.csv")
+    tab.to_csv(DATA / "figure5_parameter_uncertainty.csv", index=False)
+    print("wrote analysis/derived/figure5_parameter_uncertainty.csv")
 
 
 if __name__ == "__main__":

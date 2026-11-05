@@ -1,4 +1,10 @@
-"""Combined wave-1 + wave-2 fit for the SECOND trend calibration (round 2).
+"""NROY marginals from the round-2 trend calibration (read-only variant).
+
+Identical to calib4_final_fit.py except that it reports how wide the retained
+region is on each free parameter, and does not rewrite
+production_parameters.json.  Original header follows.
+
+Combined wave-1 + wave-2 fit for the SECOND trend calibration (round 2).
 
 Round 2 adds infectivity_decline_per_year and drops the inert TB Duration
 column.  Wave 2 was weighted 70/30 toward the loose-cascade stratum, so this
@@ -17,16 +23,16 @@ Two details that matter:
   homoscedastic WhiteKernel.  Without this the wave-1 points would drag the fit.
 * Emulation is on log10 of the output, on the viable subset only, for the reason
   established in wave 2: the raw-scale spread (0 to 11,489 per 100,000) makes a
-  raw GP useless.  See analysis/wave2_design_trend.py.
+  raw GP useless.  See analysis/calib3_wave2_design.py.
 
 The production point is chosen as the SIMULATED design point with the lowest
 max implausibility across the six burden targets — not an emulator optimum — so
 the production run reproduces a parameter set that has actually been run.
 
 Run with the notebook environment (needs sklearn/scipy):
-    C:/Users/young/anaconda3/envs/tb_india/python.exe analysis/finalize_trend.py
+    python analysis/calib4_final_fit.py
 
-Writes analysis/production_params_trend.json and analysis/finalize_trend_report.txt
+Writes analysis/derived/production_parameters.json and analysis/derived/calibration_final_fit_report.txt
 """
 from __future__ import annotations
 import io, json, sys
@@ -35,8 +41,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from targets_trend import TARGETS, BURDEN, CASCADE, WHO_INCIDENCE, HOLDOUT_YEARS  # noqa: E402
-from wave2_design_trend2 import to_unit, PRIORS, VIABLE_LO, VIABLE_HI, SEED  # noqa: E402
+from calibration_targets import TARGETS, BURDEN, CASCADE, WHO_INCIDENCE, HOLDOUT_YEARS  # noqa: E402
+from calib3_wave2_design import to_unit, PRIORS, VIABLE_LO, VIABLE_HI, SEED  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -45,8 +51,8 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
 ROOT = HERE.parent
 WAVES = [
-    ("wave1", "af707f22-16bc-f111-92f1-000d3af5294c", "wave1_design_trend2.csv", 10),
-    ("wave2", "496ded25-37bc-f111-92f1-000d3af5294c", "wave2_design_trend2.csv", 25),
+    ("wave1", "af707f22-16bc-f111-92f1-000d3af5294c", "design.csv", 10),
+    ("wave2", "496ded25-37bc-f111-92f1-000d3af5294c", "design.csv", 25),
 ]
 TF_LOOSE, CS_LOOSE = 0.82, 2.0
 N_CANDIDATES = 400_000
@@ -57,7 +63,7 @@ FREE = [p[0] for p in PRIORS]
 def load():
     frames = []
     for name, uid, design, reps in WAVES:
-        out = pd.read_csv(ROOT / "calibration" / name / "design_outputs_trend.csv")
+        out = pd.read_csv(ROOT / "calibration" / name / "design_outputs.csv")
         des = pd.read_csv(ROOT / "calibration" / name / design)
         d = des.merge(out, on="design_id")
         d["wave"] = name
@@ -136,6 +142,37 @@ def main():
             f"(wave-1 only was 6.6%; viability gate keeps {gate.mean()*100:.1f}%)")
     print(line); rep.append(line)
 
+
+    # ---- per-parameter NROY marginals: how much latitude remains ----
+    # PRIORS entries are (name, lo, hi, scale); the span is measured on the
+    # scale the prior was drawn on, so a log parameter is not made to look
+    # narrow by its own units.
+    keep = Imax <= I_THRESHOLD
+    Xn = np.empty((int(keep.sum()), len(PRIORS)))
+    for j, (p, lo, hi, scale) in enumerate(PRIORS):
+        u = U[keep, j]
+        if scale == "log":
+            Xn[:, j] = np.exp(np.log(lo) + (np.log(hi) - np.log(lo)) * u)
+        else:
+            Xn[:, j] = lo + (hi - lo) * u
+    print()
+    print("per-parameter NROY marginals (5-95% of the retained volume)")
+    print("  %-38s%24s%24s%8s" % ("parameter", "prior", "NROY 5-95%", "span"))
+    marg = []
+    for j, (p, lo, hi, scale) in enumerate(PRIORS):
+        q5, q95 = np.percentile(Xn[:, j], [5, 95])
+        if scale == "log":
+            span = 100.0 * (np.log(q95) - np.log(q5)) / (np.log(hi) - np.log(lo))
+        else:
+            span = 100.0 * (q95 - q5) / (hi - lo)
+        marg.append({"parameter": p, "scale": scale, "prior_lo": lo, "prior_hi": hi,
+                     "nroy_p5": q5, "nroy_p95": q95, "retained_span_pct": span})
+        print("  %-38s%24s%24s%7.0f%%" % (
+            p, "[%.4g, %.4g]" % (lo, hi), "[%.4g, %.4g]" % (q5, q95), span))
+    pd.DataFrame(marg).to_csv(DATA / "nroy_marginals.csv", index=False)
+    print()
+    print("wrote " + str(DATA / "nroy_marginals.csv"))
+
     # ── loose vs tight cascade: the question this round was run to answer ──
     d["tf2024"] = 0.70 + d["tf_gain_per_year"] * 27
     d["cs_mult"] = (1 + d["cs_gain_per_year"]) ** 27
@@ -206,10 +243,10 @@ def main():
                "targets": {t: {"z": TARGETS[t][0], "sigma": TARGETS[t][1],
                                "model": float(best[t]), "I": float(best[f"I_{t}"])}
                            for t in TARGETS if t in d}},
-              open(DATA / "production_params_trend2.json", "w"), indent=1)
-    (DATA / "finalize_trend2_report.txt").write_text("\n".join(rep), encoding="utf-8")
+              io.StringIO(), indent=1)
+    (DATA / "calibration_final_fit_report.txt").write_text("\n".join(rep), encoding="utf-8")
     print("\n".join(rep[rep.index("\n  production parameters:"):]))
-    print(f"\nwrote analysis/production_params_trend.json")
+    print(f"\nwrote analysis/derived/calibration_final_fit_report.txt")
 
 
 if __name__ == "__main__":

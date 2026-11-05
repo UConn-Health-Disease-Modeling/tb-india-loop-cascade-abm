@@ -253,7 +253,7 @@ parameters = [
     # hand-set step with a monotone improvement from 1997 to 2024 and are what
     # allows the model to reproduce the WHO incidence decline (322 -> 197 per
     # 100,000 over 2000-2020).  Zero is inside both priors, so the calibration
-    # can still reject the mechanism.  Applied via helpers/campaign_trend.py.
+    # can still reject the mechanism.  Applied via helpers/campaign_schedules.py.
     {
         'Name': 'tf_gain_per_year',
         'Dynamic': True,
@@ -276,7 +276,7 @@ parameters = [
         'Name': 'infectivity_decline_per_year',
         'Dynamic': True,
         # NOT EMOD config — applied via build_camp as a NodeInfectivityMult
-        # campaign event (see helpers/campaign_trend.infectivity_multiplier_map).
+        # campaign event (see helpers/campaign_schedules.infectivity_multiplier_map).
         # Stands for the part of India's historical decline that the care cascade
         # does not produce: living conditions, nutrition, housing density,
         # demographic change.  Zero is inside the prior, so "the cascade explains

@@ -41,13 +41,13 @@ from idmtools.entities.experiment import Experiment
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-SAMPLES = json.load(open(DATA / "nroy_subsamples_b.json", encoding="utf-8"))
+SAMPLES = json.load(open(DATA / "nroy_parameter_sets.json", encoding="utf-8"))
 FREE = ["Base_Infectivity_Constant", "TB Presymptomatic Duration Years",
         "Care Seeking Fast Duration Days", "Care Seeking Slow Duration Days",
         "TB_Slow_Progressor_Rate", "Post_Infection_Acquisition_Multiplier",
         "TB_Fast_Progressor_Fraction_Adult", "tf_gain_per_year",
         "cs_gain_per_year", "infectivity_decline_per_year"]
-REPLICATES_B = 10
+REPLICATES_PROPAGATION = 10
 
 
 def build_propagation_experiment(task, subsample, build_camp,
@@ -55,7 +55,7 @@ def build_propagation_experiment(task, subsample, build_camp,
                                  campaign_kwargs_from_sample, add_tb_drug_type,
                                  update_sim_random_seed, COMBINED_SCENARIOS,
                                  TX_DRUG_NAME, TX_CURE_PROPORTION,
-                                 replicates=REPLICATES_B):
+                                 replicates=REPLICATES_PROPAGATION):
     """Cross-product sweep over NROY parameter sets and intervention scenarios."""
 
     def sample_for(rec):

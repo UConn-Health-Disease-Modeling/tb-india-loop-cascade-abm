@@ -21,7 +21,7 @@ Addresses Sourya comments:
 Uses episodes activating from 2025 (when the interventions switch on in the
 simulations) so that pre-intervention episodes do not dilute the contrast.
 
-Writes figures/Figure_TxCure/Fig5_triple_lens.png and analysis/derived/fig5_values_txc.csv
+Writes figures/reproduced/Figure4_three_lens_intervention_impact.png and analysis/derived/figure4_values.csv
 """
 from __future__ import annotations
 import io, sys
@@ -45,7 +45,7 @@ mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-OUT = HERE.parent / "figures" / "Figure_TxCure"
+OUT = HERE.parent / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
 
 WINDOW = "post2025"
@@ -64,7 +64,7 @@ NREP = None   # set by build(); the production run is 98 replicates per scenario
 
 def build():
     global NREP
-    d = pd.read_csv(DATA / "scenario_episodes_txc.csv.gz")
+    d = pd.read_csv(DATA / "scenario_episodes.csv.gz")
     NREP = int(d.rep.nunique())
     d = d[d.window == WINDOW].copy()
     d["hs_d"] = d.dxloop_d + d.txfail_d + d.ontx_d
@@ -162,7 +162,7 @@ def plot(v: pd.DataFrame):
     cb = fig.colorbar(sm, ax=axes, fraction=0.025, pad=0.02)
     cb.set_label("Reduction vs Baseline (%)", fontsize=16.2)
 
-    p = OUT / "Fig5_triple_lens.png"
+    p = OUT / "Figure4_three_lens_intervention_impact.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)
@@ -170,7 +170,7 @@ def plot(v: pd.DataFrame):
 
 if __name__ == "__main__":
     v = build()
-    v.to_csv(DATA / "fig5_values_txc.csv", index=False)
+    v.to_csv(DATA / "figure4_values.csv", index=False)
     plot(v)
     print("max paired 95pct CI half-width: {:.2f} pp".format(v.ci.max()))
     print(v[v.lens == "D"].pivot(index="row", columns="scenario", values="mean")

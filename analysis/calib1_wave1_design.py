@@ -1,6 +1,6 @@
 """Wave-1 LHS design for the second trend calibration (2026-09-29).
 
-Two changes from analysis/calibration_wave1_lhs_trend.py:
+Two changes from the design of the first trend calibration:
 
 1. `infectivity_decline_per_year` is added.  It drives a NodeInfectivityMult
    campaign event that reduces node infectivity geometrically from 1997 to 2024
@@ -20,7 +20,7 @@ Two changes from analysis/calibration_wave1_lhs_trend.py:
    at the production value (3.5 y with a 0.55 case-fatality ratio, set by the
    subsample) and is reported as a fixed parameter.
 
-Free parameters: 10.  Output: analysis/wave1_design_trend2.csv
+Free parameters: 10.  Output: calibration/wave1/design.csv
 """
 from __future__ import annotations
 import argparse, io, os, sys
@@ -68,7 +68,7 @@ def main():
     ap.add_argument("--seed", type=int, default=929)
     args = ap.parse_args()
     here = os.path.dirname(os.path.abspath(__file__))
-    out = os.path.join(here, "wave1_design_trend2.csv")
+    out = os.path.join(os.path.dirname(here), "calibration", "wave1", "design.csv")
 
     rng = np.random.default_rng(args.seed)
     u = latin_hypercube(args.n, len(PRIORS), rng)

@@ -17,13 +17,13 @@ the region that matters for the manuscript's question:
 remainder of the NROY, so the two strata can be compared rather than one being
 assumed.
 
-Pipeline is otherwise the same as analysis/wave2_design_trend.py: a random-forest
+Pipeline is otherwise the same as the first trend calibration's wave 2: a random-forest
 viability gate, then log-scale GP emulators, then implausibility in log space.
 
 Run with the notebook environment (needs sklearn/scipy):
-    C:/Users/young/anaconda3/envs/tb_india/python.exe analysis/wave2_design_trend2.py
+    python analysis/calib3_wave2_design.py
 
-Output: analysis/wave2_design_trend2.csv, analysis/wave2_design_trend2_report.txt
+Output: calibration/wave2/design.csv, calibration/wave2/design_report.txt
 """
 from __future__ import annotations
 import io, sys
@@ -32,8 +32,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from targets_trend import TARGETS, BURDEN  # noqa: E402
-from calibration_wave1_lhs_trend2 import PRIORS, FIXED, COL_ORDER  # noqa: E402
+from calibration_targets import TARGETS, BURDEN  # noqa: E402
+from calib1_wave1_design import PRIORS, FIXED, COL_ORDER  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -77,8 +77,8 @@ def main():
     from sklearn.cluster import KMeans
 
     rng = np.random.default_rng(SEED)
-    d = pd.read_csv(ROOT / "calibration" / "wave1" / "wave1_design_trend2.csv").merge(
-        pd.read_csv(ROOT / "calibration" / "wave1" / "design_outputs_trend.csv"),
+    d = pd.read_csv(ROOT / "calibration" / "wave1" / "design.csv").merge(
+        pd.read_csv(ROOT / "calibration" / "wave1" / "design_outputs.csv"),
         on="design_id").dropna(subset=BURDEN)
     X = to_unit(d)
     viable = d["incidence_2020"].between(VIABLE_LO, VIABLE_HI).to_numpy()
@@ -155,19 +155,19 @@ def main():
     for k, v in FIXED.items():
         W[k] = v
     W = W[["design_id"] + COL_ORDER]
-    W.to_csv(ROOT / "calibration" / "wave2" / "wave2_design_trend2.csv", index=False)
+    W.to_csv(ROOT / "calibration" / "wave2" / "design.csv", index=False)
 
     tf_w = 0.70 + W["tf_gain_per_year"] * 27
     cs_w = (1 + W["cs_gain_per_year"]) ** 27
     inf_w = (1 - W["infectivity_decline_per_year"]) ** 27
-    rep += [f"\nwrote wave2_design_trend2.csv ({len(W)} points)",
+    rep += [f"\nwrote calibration/wave2/design.csv ({len(W)} points)",
             f"  2024 treatment fraction : {tf_w.min():.2f} - {tf_w.max():.2f} "
             f"(median {tf_w.median():.2f}); {(tf_w < TF_LOOSE).sum()} below {TF_LOOSE}",
             f"  care-seeking multiplier : x{cs_w.min():.2f} - x{cs_w.max():.2f} "
             f"(median x{cs_w.median():.2f}); {(cs_w < CS_LOOSE).sum()} below {CS_LOOSE}x",
             f"  infectivity multiplier  : x{inf_w.min():.2f} - x{inf_w.max():.2f} "
             f"(median x{inf_w.median():.2f})"]
-    (ROOT / "calibration" / "wave2" / "wave2_design_trend2_report.txt").write_text("\n".join(rep), encoding="utf-8")
+    (ROOT / "calibration" / "wave2" / "design_report.txt").write_text("\n".join(rep), encoding="utf-8")
     print("\n".join(rep[-4:]))
 
 

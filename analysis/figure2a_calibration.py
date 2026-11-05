@@ -4,17 +4,15 @@ Figure 2 for the manuscript — production run, 2026-09-25.
 
 This is the figure that answers the reviewer comment about the baseline trend.
 It plots the calibrated model against the full WHO incidence series instead of a
-single 2020 anchor, using the 25 replicates of the combined wave-1 + wave-2 best
-fit (wave-2 design 8, experiment fcc9da93).
+single 2020 anchor, using the Baseline (Scenario_Code 0) replicates of the
+production run (experiment d892bdf7), which runs the round-2 best fit
+(wave-2 design 4).
 
-Unlike figures/Figure_0909/Fig2_calibration.png — which showed the PUBLISHED
-model before re-calibration — the model line here is fitted to the four WHO
-incidence years, so the diamonds are targets it was actually fitted to.
+Unlike Figure 2 of the original submission — which showed the model before
+re-calibration — the model line here is fitted to the four WHO incidence
+years, so the diamonds are targets it was actually fitted to.
 
-Note this is the calibration point run in Baseline configuration only; the
-manuscript's other figures need the production run (8 scenarios x 100 reps).
-
-Writes figures/Figure_TxCure/Fig2_calibration_trend.png
+Writes figures/reproduced/Figure2A_calibration.png
 """
 from __future__ import annotations
 import io, json, sqlite3, sys
@@ -25,7 +23,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from targets_trend import WHO_INCIDENCE, TREND_YEARS, TARGETS  # noqa: E402
+from calibration_targets import WHO_INCIDENCE, TREND_YEARS, TARGETS  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -42,10 +40,10 @@ mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
 ROOT = HERE.parent
-OUT = ROOT / "figures" / "Figure_TxCure"
+OUT = ROOT / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
 EXP = ROOT / "d892bdf7-18bd-f111-92f1-000d3af5294c"
-CACHE = DATA / "production_burden_txc.csv.gz"
+CACHE = DATA / "production_baseline_burden.csv.gz"
 BASE_YEAR, DT = 1850, 14.0
 
 
@@ -143,7 +141,7 @@ def main():
         ax.set_ylim(bottom=0)
 
     plt.tight_layout()
-    p = OUT / "Fig2_calibration_trend.png"
+    p = OUT / "Figure2A_calibration.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)

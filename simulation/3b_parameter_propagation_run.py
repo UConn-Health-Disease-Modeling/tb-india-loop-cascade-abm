@@ -1,19 +1,19 @@
 """Propagation run: the production task, swept over 20 NROY parameter sets.
 
-Generated from cell 25 of 01_India_TB_v28_txgated.ipynb; the task-building code
+Generated from cell 25 of 3_production_scenarios.ipynb; the task-building code
 is that cell's, unchanged.  Only the sweep differs - see the comment block
 inside the function.
 
 Usage, in a new notebook cell after cell 25 (do NOT run cell 26):
 
-    exec(open("../analysis/run_experiment_B.py").read())
-    uid = run_experiment_B()
+    exec(open("3b_parameter_propagation_run.py").read())
+    uid = run_parameter_propagation()
 
-Set REPLICATES_B before calling if 10 is not wanted.
+Set REPLICATES_PROPAGATION before calling if 10 is not wanted.
 """
-REPLICATES_B = 10
+REPLICATES_PROPAGATION = 10
 
-def run_experiment_B():
+def run_parameter_propagation():
     from idmtools.entities.experiment import Experiment
     from idmtools.builders import SimulationBuilder
 
@@ -116,7 +116,7 @@ def run_experiment_B():
              "TB_Slow_Progressor_Rate", "Post_Infection_Acquisition_Multiplier",
              "TB_Fast_Progressor_Fraction_Adult", "tf_gain_per_year",
              "cs_gain_per_year", "infectivity_decline_per_year"]
-    _SAMPLES = _json.load(open("../analysis/derived/nroy_subsamples_b.json", encoding="utf-8"))
+    _SAMPLES = _json.load(open("../analysis/derived/nroy_parameter_sets.json", encoding="utf-8"))
 
     def _sample_for(rec):
         """The production dict with only the ten calibrated columns replaced."""
@@ -161,14 +161,14 @@ def run_experiment_B():
     _combos = [(rec, scen) for rec in _SAMPLES for scen in COMBINED_SCENARIOS]
 
     builder = SimulationBuilder()
-    builder.add_sweep_definition(update_sim_random_seed, range(REPLICATES_B))
+    builder.add_sweep_definition(update_sim_random_seed, range(REPLICATES_PROPAGATION))
     builder.add_sweep_definition(sweep_param_and_scenario, _combos)
 
     exp_name = "TB_India_v28_NROY_propagation"
-    _n = REPLICATES_B * len(_combos)
+    _n = REPLICATES_PROPAGATION * len(_combos)
     print(f"  parameter sets    : {len(_SAMPLES)}")
     print(f"  scenarios         : {len(COMBINED_SCENARIOS)}")
-    print(f"  replicates        : {REPLICATES_B}")
+    print(f"  replicates        : {REPLICATES_PROPAGATION}")
     print(f"  TOTAL SIMULATIONS : {_n}")
 
     print(f'\nExperiment: {exp_name}')

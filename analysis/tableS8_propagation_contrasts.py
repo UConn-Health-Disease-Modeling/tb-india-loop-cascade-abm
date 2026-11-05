@@ -26,7 +26,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-SRC = DATA / "burden_propagation.csv.gz"
+SRC = DATA / "burden_by_parameter_set.csv.gz"
 OUT = DATA / "propagation_contrasts.csv"
 MEASURES = [("inc100k", "incidence"), ("prevall100k", "prevalence"),
             ("mort100k", "mortality")]
@@ -43,7 +43,7 @@ def q(v):
 
 def main():
     if not SRC.exists():
-        raise SystemExit(f"{SRC} not found - run extract_propagation.py first")
+        raise SystemExit(f"{SRC} not found - run extract5_parameter_propagation.py first")
     d = pd.read_csv(SRC)
     # a replicate in which TB died out carries no information about an epidemic
     dead = d.groupby(["param_set", "rep"]).inc100k.max().pipe(lambda s: s[s == 0].index)

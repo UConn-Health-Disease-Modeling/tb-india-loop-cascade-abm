@@ -4,14 +4,14 @@ Figure 2B (cascade benchmarks, 2015-2024 cohort) and all Table-2 values from the
 
 One pass over the 100 baseline replicates of experiment 3cd8bdf6 produces both:
 
-  figures/Figure_TxCure/Fig2B_cascade_validation.png
-  analysis/derived/table2_values_txc.json
+  figures/reproduced/Figure2B_cascade_benchmarks.png
+  analysis/derived/table2_values.json
 
 Panels mirror the published Figure 2B: the distribution of diagnostic tests per
 episode, mean tests per episode by loop group against the Subbaraman targets,
 and the loop-group composition against the same targets.
 
-Table-2 quantities follow analysis/compute_table2_values.py: loop-group fractions
+Table-2 quantities, as defined in the manuscript: loop-group fractions
 (mean + IQR across replicates), the three delay phases, and the excess-resource
 metrics (renamed from "wasted" per reviewer comment #62).
 """
@@ -24,7 +24,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fig1_rebuild_txc import process_rep, EXP, COHORT, DUMP as EPISODES  # noqa: E402
+from extract1_baseline_episodes import process_rep, EXP, COHORT, DUMP as EPISODES  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -40,9 +40,9 @@ mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-OUT = HERE.parent / "figures" / "Figure_TxCure"
+OUT = HERE.parent / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
-CACHE = HERE / "baseline_episodes_full_txc.csv.gz"
+CACHE = HERE / "baseline_episodes_full_cache.csv.gz"
 
 GROUPS = ["NoLooponly", "TestLooponly", "TxFailonly", "TestTxfail"]
 SHOW = ["NoLooponly", "TestLooponly", "TestTxfail"]
@@ -152,7 +152,7 @@ def main():
     plt.tight_layout()
     # B2's title is wider than its axes and ran into B3's y-axis label
     fig.subplots_adjust(wspace=0.34)
-    p = OUT / "Fig2B_cascade_validation.png"
+    p = OUT / "Figure2B_cascade_benchmarks.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)
@@ -200,8 +200,8 @@ def main():
         "excess_personyears_cohort_total": float(excess_pd.sum() / 365.0),
         "noloop_mean_total_days": noloop_mean_total,
     }
-    (DATA / "table2_values_txc.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
-    print("wrote analysis/derived/table2_values_txc.json")
+    (DATA / "table2_values.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+    print("wrote analysis/derived/table2_values.json")
 
     print("\nloop fractions:", {k: round(v["mean"], 3)
                                 for k, v in out["loop_fractions"].items()})

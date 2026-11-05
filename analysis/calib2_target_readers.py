@@ -1,4 +1,12 @@
-"""Compute all 10 calibration targets per design point for a wave-1 experiment.
+"""Readers for EMOD outputs, shared by calib2_design_point_outputs.py.
+
+calib2_design_point_outputs.py imports sum_pr, cascade_from_rer and
+cascade_targets from here.  Run on its own, this script computes the ten
+targets of the earlier single-year (2020) calibration; the calibration in the
+manuscript uses calib2_design_point_outputs.py instead.
+
+Original description: compute all 10 calibration targets per design point for
+a wave-1 experiment.
 
 Burden targets (1-3) come from PropertyReportTB.json (consistent with the
 calibration-overlay figure); cascade targets (4-10) come from
@@ -6,11 +14,11 @@ ReportEventRecorder.csv. Results are checkpointed every few design points so an
 interrupted run resumes where it left off.
 
 Outputs (in <exp>/calibration/):
-    design_outputs.csv   — design_id + 10 target values (mean across reps)
-    wave1_bestfit.json   — best-fit design_id, per-target implausibility, summary
+    design_outputs_single_year.csv — design_id + 10 target values (mean across reps)
+    best_fit_single_year.json      — best-fit design_id, per-target implausibility, summary
 
 Usage:
-    python analysis/compute_wave1_targets.py <exp_uid>
+    python analysis/calib2_target_readers.py <exp_uid>
 """
 from __future__ import annotations
 import glob, io, json, os, sqlite3, sys
@@ -124,7 +132,7 @@ def main():
     exp_dir = root / exp
     out_dir = exp_dir / "calibration"
     out_dir.mkdir(exist_ok=True)
-    ckpt = out_dir / "design_outputs.csv"
+    ckpt = out_dir / "design_outputs_single_year.csv"
 
     conn = sqlite3.connect(str(exp_dir / "results.db"))
     tags = pd.read_sql_query("SELECT * FROM results", conn)
@@ -211,9 +219,9 @@ def main():
         "best_fit_design_id": bid,
         "targets": out_targets,
     }
-    with open(out_dir / "wave1_bestfit.json", "w") as fp:
+    with open(out_dir / "best_fit_single_year.json", "w") as fp:
         json.dump(result, fp, indent=2)
-    print(f"\nSaved: {out_dir/'wave1_bestfit.json'}")
+    print(f"\nSaved: {out_dir/'best_fit_single_year.json'}")
 
 
 if __name__ == "__main__":

@@ -12,8 +12,8 @@ loop group) and replicate-based uncertainty (comment #66).
 Scenario_Code -> (ACF, Dx, Tx):
   0 Baseline | 1 Tx | 2 Dx | 3 Dx+Tx | 4 ACF | 5 ACF+Tx | 6 ACF+Dx | 7 ACF+Dx+Tx
 
-Output: analysis/derived/scenario_episodes_txc.csv.gz  (one row per scenario x replicate
-x loop group x activation window) and analysis/derived/scenario_dist_txc.csv.gz (per
+Output: analysis/derived/scenario_episodes.csv.gz  (one row per scenario x replicate
+x loop group x activation window) and analysis/derived/scenario_infectious_time.csv.gz (per
 episode infectious time, baseline scenario only, for the density panel).
 """
 from __future__ import annotations
@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fig1_rebuild_txc import process_rep, EXP, GROUPS  # noqa: E402
+from extract1_baseline_episodes import process_rep, EXP, GROUPS  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -80,13 +80,13 @@ def main():
                 print(f"   {SCEN[sc]} {rep+1}/{len(sims)}", flush=True)
 
     out = pd.concat(rows, ignore_index=True)
-    out.to_csv(DATA / "scenario_episodes_txc.csv.gz", index=False,
+    out.to_csv(DATA / "scenario_episodes.csv.gz", index=False,
                compression="gzip")
-    print("wrote scenario_episodes_txc.csv.gz", out.shape)
+    print("wrote scenario_episodes.csv.gz", out.shape)
 
     d = pd.concat(dist, ignore_index=True)
-    d.to_csv(DATA / "scenario_dist_txc.csv.gz", index=False, compression="gzip")
-    print("wrote scenario_dist_txc.csv.gz", d.shape)
+    d.to_csv(DATA / "scenario_infectious_time.csv.gz", index=False, compression="gzip")
+    print("wrote scenario_infectious_time.csv.gz", d.shape)
 
 
 if __name__ == "__main__":

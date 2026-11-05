@@ -8,7 +8,7 @@ individual's whole event history (97% agreement with the per-episode rule).
 Panel A rates are per-episode column sums (treatment starts = first initiation
 per episode), not recorder-wide event totals, which counted every event in the
 run regardless of window.  The full per-episode table (all years, with act_year)
-is dumped to analysis/derived/baseline_episodes_year2_txc.csv.gz for fig3_rebuild_txc.py.
+is dumped to analysis/derived/baseline_episodes.csv.gz for figure3_loop_group_burden.py.
 One replicate (rep 40) fades out before 1960 and contributes no cohort episodes;
 it is dropped from the per-replicate rate means (97 reps) but kept in the
 population-year denominator of Figure 3D, as in every other figure.
@@ -29,12 +29,12 @@ Rebuild Figure 1A/1B for the 2026-09 revision (Sourya comments #59, #60).
      with the third (Test-loop only) trajectory and real model medians, with
      transition times annotated.
 
-Episode definition (identical to analysis/compute_table2_values.py): a
+Episode definition (the one Table 2 uses): a
 TBActivation followed by a resolution (SymptomaticCleared | DiseaseDeaths)
 before the next TBActivation.  Loop group is assigned per episode from the
 episode's counts of TBTestNegative / TBTestDefault / TBFailedDrugRegimen.
 
-Writes analysis/derived/fig1_values_txc.json
+Writes analysis/derived/figure1_values.json
 """
 from __future__ import annotations
 import io, json, sqlite3, sys
@@ -59,7 +59,7 @@ CASCADE = ({"TBActivation", PRESYMP} | TESTS | RESOLUTION |
 
 GROUPS = ["NoLooponly", "TestLooponly", "TxFailonly", "TestTxfail"]
 COHORT = (2015.0, 2025.0)          # activation in calendar years 2015-2024
-DUMP = DATA / "baseline_episodes_year2_txc.csv.gz"
+DUMP = DATA / "baseline_episodes.csv.gz"
 
 
 def process_rep(rf: Path):
@@ -274,7 +274,7 @@ def main():
                                       float(panelB.loc[g, "q75"])]} for g in GROUPS},
            "progression_pct": {"mean": float(prog.mean()), "ci": float(prog.sem() * t_crit)},
            "group_delays_days": dl}
-    (DATA / "fig1_values_txc.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+    (DATA / "figure1_values.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
 
     print("\nPanel A (events per 100 cohort episodes):")
     print(panelA.round(1).to_string())
@@ -283,7 +283,7 @@ def main():
     print(f"\nProgression to active TB (whole run): {prog.mean():.1f}% of infected individuals")
     print("\nPer-group median delays (days):")
     print(pd.DataFrame(dl).T.round(1).to_string())
-    print("\nWrote analysis/derived/fig1_values_txc.json")
+    print("\nWrote analysis/derived/figure1_values.json")
 
 
 if __name__ == "__main__":

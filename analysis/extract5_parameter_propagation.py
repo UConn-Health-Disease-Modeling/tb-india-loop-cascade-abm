@@ -1,6 +1,6 @@
 """Extract burden trajectories from the NROY propagation run.
 
-Same channels as extract_burden_incl.py, with the parameter set carried through
+Same channels as extract4_burden_both_prevalence.py, with the parameter set carried through
 as a third key, so the analysis can separate what varies because the model is
 stochastic from what varies because the calibration did not pin the parameters
 down.
@@ -11,7 +11,7 @@ channels, as in the main analysis: Active TB Prevalence is the one the
 calibration targets and the one Figure 5 reports, and the symptomatic channel
 is kept for continuity with the earlier extract.
 
-Writes analysis/derived/burden_propagation.csv.gz
+Writes analysis/derived/burden_by_parameter_set.csv.gz
 """
 from __future__ import annotations
 import io
@@ -33,7 +33,7 @@ EXP = ROOT / "f8dfe706-d7c0-f111-92f1-000d3af5294c"
 SCEN = {0: "Baseline", 1: "Tx", 2: "Dx", 3: "Dx+Tx",
         4: "ACF", 5: "ACF+Tx", 6: "ACF+Dx", 7: "ACF+Dx+Tx"}
 BASE_YEAR, DT = 1850, 14.0
-OUT = DATA / "burden_propagation.csv.gz"
+OUT = DATA / "burden_by_parameter_set.csv.gz"
 
 
 def load_tags():

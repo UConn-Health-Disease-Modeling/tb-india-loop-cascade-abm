@@ -5,9 +5,9 @@ interventions from 2025]
 
 Draw Figure 1A and Figure 1B for the 2026-09 revision.
 
-Reads analysis/derived/fig1_values_txc.json (produced by fig1_rebuild_0909.py) and
-writes figures/Figure_TxCure/Fig1A_cascade_rates.png and
-figures/Figure_TxCure/Fig1B_patient_trajectories.png
+Reads analysis/derived/figure1_values.json (produced by extract1_baseline_episodes.py) and
+writes figures/reproduced/Figure1A_cascade_events_and_composition.png and
+figures/reproduced/Figure1B_patient_trajectories.png
 """
 from __future__ import annotations
 import json, sys
@@ -29,9 +29,9 @@ mpl.rcParams.update({"font.size": 16, "axes.titlesize": 19.5, "axes.labelsize": 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
 ROOT = HERE.parent
-OUT = ROOT / "figures" / "Figure_TxCure"
+OUT = ROOT / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
-V = json.loads((DATA / "fig1_values_txc.json").read_text(encoding="utf-8"))
+V = json.loads((DATA / "figure1_values.json").read_text(encoding="utf-8"))
 
 REDS = {"NoLooponly": "#FCAE91", "TestLooponly": "#FB6A4A",
         "TxFailonly": "#DE2D26", "TestTxfail": "#A50F15"}
@@ -114,7 +114,7 @@ def fig1a():
             fontweight="bold", va="top")
 
     plt.tight_layout()
-    p = OUT / "Fig1A_cascade_rates.png"
+    p = OUT / "Figure1A_cascade_events_and_composition.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)
@@ -219,7 +219,7 @@ def fig1b():
               title_fontsize=16.2)
 
     plt.tight_layout()
-    p = OUT / "Fig1B_patient_trajectories.png"
+    p = OUT / "Figure1B_patient_trajectories.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)

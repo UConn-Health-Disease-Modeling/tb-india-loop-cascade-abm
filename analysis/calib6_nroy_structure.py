@@ -7,12 +7,12 @@ draws), how much a parameter's retained range shrinks once another is fixed
 (conditional spans), and how little the care-cascade benchmarks vary across
 burden-plausible design points (why they could not break the trade-offs).
 
-Same emulator pipeline as nroy_marginals_trend2.py (viability gate + six
+Same emulator pipeline as calib5_nroy_marginals.py (viability gate + six
 log10 burden emulators + 400,000 prior draws, 3-sigma threshold).  Read-only.
 
 Run with the notebook environment:
-    C:/Users/young/anaconda3/envs/tb_india/python.exe analysis/nroy_structure_trend2.py
-Writes analysis/derived/nroy_structure_trend2.txt and analysis/derived/nroy_corr_trend2.csv
+    python analysis/calib6_nroy_structure.py
+Writes analysis/derived/nroy_structure_report.txt and analysis/derived/nroy_rank_correlations.csv
 """
 from __future__ import annotations
 import io, sys
@@ -21,8 +21,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from targets_trend import TARGETS, BURDEN, CASCADE  # noqa: E402
-from wave2_design_trend2 import to_unit, PRIORS, VIABLE_LO, VIABLE_HI, SEED  # noqa: E402
+from calibration_targets import TARGETS, BURDEN, CASCADE  # noqa: E402
+from calib3_wave2_design import to_unit, PRIORS, VIABLE_LO, VIABLE_HI, SEED  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -31,8 +31,8 @@ HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
 ROOT = HERE.parent
 WAVES = [
-    ("wave1", "af707f22-16bc-f111-92f1-000d3af5294c", "wave1_design_trend2.csv", 10),
-    ("wave2", "496ded25-37bc-f111-92f1-000d3af5294c", "wave2_design_trend2.csv", 25),
+    ("wave1", "af707f22-16bc-f111-92f1-000d3af5294c", "design.csv", 10),
+    ("wave2", "496ded25-37bc-f111-92f1-000d3af5294c", "design.csv", 25),
 ]
 N_CANDIDATES = 400_000
 I_THRESHOLD = 3.0
@@ -53,7 +53,7 @@ SHORT = {
 def load():
     frames = []
     for name, uid, design, reps in WAVES:
-        out = pd.read_csv(ROOT / "calibration" / name / "design_outputs_trend.csv")
+        out = pd.read_csv(ROOT / "calibration" / name / "design_outputs.csv")
         des = pd.read_csv(ROOT / "calibration" / name / design)
         d = des.merge(out, on="design_id")
         d["wave"], d["reps"] = name, reps
@@ -112,7 +112,7 @@ def main():
 
     # ---- 1. rank correlations among retained draws --------------------------
     corr = Un.corr(method="spearman")
-    corr.to_csv(DATA / "nroy_corr_trend2.csv")
+    corr.to_csv(DATA / "nroy_rank_correlations.csv")
     pairs = sorted(((a, b, corr.loc[a, b]) for i, a in enumerate(names) for b in names[i + 1:]),
                    key=lambda x: -abs(x[2]))
     say("\n1. Spearman correlations among NROY draws (prior draws are independent, so any "
@@ -167,8 +167,8 @@ def main():
         r = Xo.corrwith(d.loc[ok, c], method="spearman").sort_values(key=np.abs, ascending=False)
         say(f"   {c:26s} " + "  ".join(f"{k} {v:+.2f}" for k, v in r.head(3).items()))
 
-    (DATA / "nroy_structure_trend2.txt").write_text("\n".join(rep), encoding="utf-8")
-    print(f"\nwrote {HERE / 'nroy_structure_trend2.txt'}")
+    (DATA / "nroy_structure_report.txt").write_text("\n".join(rep), encoding="utf-8")
+    print(f"\nwrote {DATA / 'nroy_structure_report.txt'}")
 
 
 if __name__ == "__main__":

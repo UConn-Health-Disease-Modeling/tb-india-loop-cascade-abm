@@ -10,7 +10,7 @@ The y axis is broken: every curve lies below 35% while the End-TB target sits
 at 85% on the vs-Baseline scale, so an unbroken axis leaves five sixths of the
 panel empty and crushes the eight curves into the bottom quarter.
 
-Writes figures/Figure_TxCure/FigS_loop_sensitivity.png
+Writes figures/reproduced/FigureS2_loop_closure_sensitivity.png
 """
 from __future__ import annotations
 import io, json, sys
@@ -31,7 +31,7 @@ mpl.rcParams.update({"font.size": 14, "axes.titlesize": 17, "axes.labelsize": 15
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "derived"
-OUT = HERE.parent / "figures" / "Figure_TxCure"
+OUT = HERE.parent / "figures" / "reproduced"
 OUT.mkdir(parents=True, exist_ok=True)
 
 ORDER = ["Baseline", "ACF", "Dx", "Tx", "ACF+Dx", "ACF+Tx", "Dx+Tx", "ACF+Dx+Tx"]
@@ -47,9 +47,9 @@ SCEN = {0: "Baseline", 1: "Tx", 2: "Dx", 3: "Dx+Tx",
 
 
 def main():
-    d = pd.read_csv(DATA / "incidence_by_rep_txc.csv.gz")
+    d = pd.read_csv(DATA / "burden_by_replicate.csv.gz")
     d = d[(d.yr >= 2000) & (d.yr <= 2035)]
-    sweep = pd.read_csv(DATA / "loopsweep_incidence_txc.csv.gz")
+    sweep = pd.read_csv(DATA / "loop_closure_sweep_incidence.csv.gz")
     for name, df in (("production", d), ("loop sweep", sweep)):
         alive = df.groupby("rep").inc100k.max()
         dead = sorted(alive.index[alive == 0])
@@ -149,7 +149,7 @@ def main():
             transform=fig.transFigure, color="#333333", lw=1.5,
             solid_capstyle="round", zorder=20))
 
-    p = OUT / "FigS_loop_sensitivity.png"
+    p = OUT / "FigureS2_loop_closure_sensitivity.png"
     plt.savefig(p, dpi=300, bbox_inches="tight", facecolor="white")
     plt.close()
     print("saved", p)

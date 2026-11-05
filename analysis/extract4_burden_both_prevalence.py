@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fig1_rebuild_txc import EXP  # noqa: E402
+from extract1_baseline_episodes import EXP  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -63,8 +63,8 @@ def main():
             g["scenario"], g["rep"] = SCEN[sc], rep
             rows.append(g)
     out = pd.concat(rows, ignore_index=True)
-    out.to_csv(DATA / "burden_by_rep_incl.csv.gz", index=False, compression="gzip")
-    print("wrote burden_by_rep_incl.csv.gz", out.shape)
+    out.to_csv(DATA / "burden_by_replicate_both_prevalence.csv.gz", index=False, compression="gzip")
+    print("wrote burden_by_replicate_both_prevalence.csv.gz", out.shape)
 
 
 if __name__ == "__main__":

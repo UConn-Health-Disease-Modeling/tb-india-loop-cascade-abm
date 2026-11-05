@@ -1,4 +1,4 @@
-# minimal environment for the post-processing and figure scripts in helpers/
+# minimal environment for the post-processing and figure scripts in analysis/
 # (the scripts were also run under the simulation environment above)
 numpy>=2.0
 pandas>=2.3

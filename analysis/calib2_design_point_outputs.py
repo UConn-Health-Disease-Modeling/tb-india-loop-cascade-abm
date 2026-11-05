@@ -1,14 +1,14 @@
 """Compute the trend-calibration targets per design point (2026-09 re-run).
 
-Same pipeline as analysis/compute_wave1_targets.py, with one change: incidence is
+Same pipeline as analysis/calib2_target_readers.py, with one change: incidence is
 extracted at 2000, 2010, 2015 and 2020 instead of 2020 only, so the calibration
 is gated on the shape of the epidemic as well as its level (Sourya comment #64).
 2005 and 2023 are extracted too but held out of the implausibility calculation
 as a check on unused years.
 
-Usage:  python analysis/compute_targets_trend.py <exp_uid>
-Writes: <exp>/calibration/design_outputs_trend.csv   (checkpointed, resumable)
-        <exp>/calibration/bestfit_trend.json
+Usage:  python analysis/calib2_design_point_outputs.py <exp_uid>
+Writes: <exp>/calibration/design_outputs.csv   (checkpointed, resumable)
+        <exp>/calibration/best_fit.json
 """
 from __future__ import annotations
 import io, json, sqlite3, sys
@@ -18,8 +18,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from compute_wave1_targets import cascade_from_rer, cascade_targets, sum_pr, SCALE, BASE_YEAR  # noqa: E402
-from targets_trend import TARGETS, BURDEN, CASCADE, WHO_INCIDENCE, HOLDOUT_YEARS  # noqa: E402
+from calib2_target_readers import cascade_from_rer, cascade_targets, sum_pr, SCALE, BASE_YEAR  # noqa: E402
+from calibration_targets import TARGETS, BURDEN, CASCADE, WHO_INCIDENCE, HOLDOUT_YEARS  # noqa: E402
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -58,7 +58,7 @@ def main():
     exp_dir = root / exp
     out_dir = exp_dir / "calibration"
     out_dir.mkdir(exist_ok=True)
-    ckpt = out_dir / "design_outputs_trend.csv"
+    ckpt = out_dir / "design_outputs.csv"
 
     tags = pd.read_sql_query("SELECT * FROM results",
                              sqlite3.connect(str(exp_dir / "results.db")))
@@ -137,8 +137,8 @@ def main():
                "holdout": {f"incidence_{y}": {"who": WHO_INCIDENCE[y],
                                               "model": float(best[f"incidence_{y}"])}
                            for y in HOLDOUT_YEARS if f"incidence_{y}" in df}},
-              open(out_dir / "bestfit_trend.json", "w"), indent=1)
-    print(f"\nWrote {out_dir / 'bestfit_trend.json'}")
+              open(out_dir / "best_fit.json", "w"), indent=1)
+    print(f"\nWrote {out_dir / 'best_fit.json'}")
 
 
 if __name__ == "__main__":

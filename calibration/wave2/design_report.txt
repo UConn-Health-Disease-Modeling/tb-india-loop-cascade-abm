@@ -15,7 +15,7 @@ burden emulators (log10):
 emulator NROY: 7.13% of the prior (35,647 candidates); of those 18.9% are LOOSE (2024 treatment fraction < 0.82, care-seeking < 2.0x)
 allocating 70 points to the loose stratum and 30 to the rest
 
-wrote wave2_design_trend2.csv (100 points)
+wrote calibration/wave2/design.csv (100 points)
   2024 treatment fraction : 0.71 - 0.97 (median 0.77); 76 below 0.82
   care-seeking multiplier : x1.10 - x3.08 (median x1.43); 82 below 2.0x
   infectivity multiplier  : x0.60 - x0.96 (median x0.81)
