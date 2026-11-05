@@ -2,7 +2,8 @@
 
 Two waves of history matching (Appendix Text S-3). Each folder holds the design (one row per
 parameter combination) and the per-design-point summary outputs read by `analysis/calib4_final_fit.py`,
-`calib5_nroy_marginals.py` and `calib6_nroy_structure.py`. Raw simulation outputs are not distributed.
+`calib5_nroy_marginals.py` and `calib6_nroy_structure.py`. The raw simulation outputs of both waves are on
+Zenodo (https://doi.org/10.5281/zenodo.23984457).
 
 | Folder | COMPS experiment | Design | Design written by |
 |---|---|---|---|

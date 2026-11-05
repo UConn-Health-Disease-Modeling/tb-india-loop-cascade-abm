@@ -18,11 +18,14 @@ interventions at different stages of the cascade would change.
 | `simulation/` | The notebooks that ran the simulations on IDM COMPS, numbered in run order, with the model definition and EMOD input files | Anyone re-running the model |
 | `docs/` | Development notes on the calibration, kept for the record | Optional |
 
-Raw simulation outputs (8–45 GB per experiment) are not distributed. Everything in `analysis/derived/` was
-extracted from them, and every figure and table can be rebuilt from those files in a few minutes without EMOD.
-With a COMPS account, `python simulation/download_outputs.py` downloads the raw outputs the extraction scripts
-read and puts each experiment where they look for it; after re-running the extraction scripts,
-`python analysis/check_derived.py` confirms that the re-extracted tables match the committed ones.
+Everything in `analysis/derived/` was extracted from the raw simulation outputs, and every figure and table can
+be rebuilt from those files in a few minutes without EMOD.
+
+The raw outputs that the extraction scripts read are archived on Zenodo:
+**https://doi.org/10.5281/zenodo.23984457** (one ZIP per experiment). Unzip them in the top folder of this
+repository, re-run the extraction scripts, and `python analysis/check_derived.py` confirms that the re-extracted
+tables match the committed ones. With a COMPS account, `python simulation/download_outputs.py` downloads the same
+files from COMPS instead.
 
 ## How the pieces fit together
 
