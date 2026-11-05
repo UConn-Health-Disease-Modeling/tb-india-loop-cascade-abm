@@ -15,6 +15,9 @@ The notebooks share the same model-building cells. Which experiment a notebook r
 | `3b_parameter_propagation_run.py` | — | Run from notebook 3: the production task over 20 parameter sets from the not-ruled-out region | `f8dfe706-d7c0-f111-92f1-000d3af5294c` |
 | `4_loop_closure_sweep.ipynb` | `loopsweep` | Loop-closure sweep (Appendix Figure S-2) | `941e6423` |
 
+`download_outputs.py` downloads, for all five experiments, the output files the extraction scripts in
+`analysis/` read, with each experiment's simulation tags in `results.db`. It needs a COMPS account.
+
 The time-varying cascade schedules used to build the campaign are imported from
 `analysis/campaign_schedules.py`.
 
