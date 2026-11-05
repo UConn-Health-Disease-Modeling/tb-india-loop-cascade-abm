@@ -33,6 +33,7 @@ from inside this folder. The top-level `README.md` maps each manuscript item to 
 | `extract3_burden_by_replicate.py` | Production, all 8 scenarios | `burden_by_replicate.csv.gz` |
 | `extract4_burden_both_prevalence.py` | Production, all 8 scenarios | `burden_by_replicate_both_prevalence.csv.gz` |
 | `extract5_parameter_propagation.py` | Parameter propagation | `burden_by_parameter_set.csv.gz` |
+| `extract6_loop_closure_sweep.py` | Loop-closure sweep | `loop_closure_sweep_incidence.csv.gz` |
 
 **Figures and tables** (read `derived/` only, run in minutes)
 
@@ -62,7 +63,7 @@ Figures are written to `figures/reproduced/` under the same file names as the ma
 | `cohort_2015_2024_numbers.json` | — | headline numbers for the 2015–2024 cohort |
 | `figure1_values.json` | `extract1` | `figure1` |
 | `figure3_values.json`, `figure4_values.csv`, `figure5_parameter_uncertainty.csv` | the figure script of the same number | — (numbers quoted in the text) |
-| `loop_closure_sweep_incidence.csv.gz` | from the loop-closure sweep (experiment `941e6423`) | `figureS2` |
+| `loop_closure_sweep_incidence.csv.gz` | `extract6` | `figureS2` |
 | `nroy_marginals.csv` | `calib5` | `calib6` |
 | `nroy_parameter_sets.json` | the 20 parameter sets drawn from the not-ruled-out region | `simulation/3b_parameter_propagation_run.py` |
 | `nroy_rank_correlations.csv`, `nroy_structure_report.txt` | `calib6` | — |

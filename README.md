@@ -34,7 +34,7 @@ simulation/3_production_scenarios.ipynb   (+ 3b_parameter_propagation_run.py)
 simulation/4_loop_closure_sweep.ipynb
         │  raw outputs on COMPS (not distributed)
         ▼
-analysis/extract1 … extract5 ─► analysis/derived/ ─► analysis/figure*, tableS8 ─► figures/
+analysis/extract1 … extract6 ─► analysis/derived/ ─► analysis/figure*, tableS8 ─► figures/
 ```
 
 Script names in `analysis/` say which stage they belong to:
@@ -42,7 +42,7 @@ Script names in `analysis/` say which stage they belong to:
 | Prefix | Stage | Needs raw simulation outputs? |
 |---|---|---|
 | `calib1_` … `calib6_` | History-matching calibration, in run order | Only `calib2_`; the rest read `calibration/` |
-| `extract1_` … `extract5_` | Reads the raw outputs of an experiment and writes a table to `analysis/derived/` | Yes |
+| `extract1_` … `extract6_` | Reads the raw outputs of an experiment and writes a table to `analysis/derived/` | Yes |
 | `figure…_`, `table…_` | Builds one manuscript figure or table, named by its manuscript number | No (reads `analysis/derived/`) |
 | `calibration_targets.py`, `campaign_schedules.py` | Shared definitions: the calibration targets, and the time-varying cascade schedules used to build the EMOD campaign | — |
 
@@ -105,7 +105,7 @@ Each script's docstring states the experiment it reads and the analysis decision
 3. Run `3_production_scenarios.ipynb` with `SCENARIO = 'combined'` for the production experiment, and the cell
    described in `simulation/3b_parameter_propagation_run.py` for the parameter-propagation experiment.
    `4_loop_closure_sweep.ipynb` runs the loop-closure sweep behind Appendix Figure S-2.
-4. Run the extraction scripts `extract1_baseline_episodes.py` to `extract5_parameter_propagation.py`
+4. Run the extraction scripts `extract1_baseline_episodes.py` to `extract6_loop_closure_sweep.py`
    (`figure2a_calibration.py` and `figure3_loop_group_burden.py` without `--plot-only` also extract what they
    need), then the figure and table scripts above.
 
